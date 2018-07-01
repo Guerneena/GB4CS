@@ -1,0 +1,90 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    def globalConfiguration = rootProject.extensions.getByName("ext")
+    compileSdkVersion globalConfiguration["compile_sdk_version"]
+    buildToolsVersion globalConfiguration["build_tools_version"]
+
+    defaultConfig {
+        applicationId "com.hklouch.githubrepos4cs"
+        minSdkVersion globalConfiguration["min_sdk_version"]
+        targetSdkVersion globalConfiguration["target_sdk_version"]
+        versionCode 1
+        multiDexEnabled true
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+configurations.all rootProject.ext.get("forceVersions")
+
+dependencies {
+    def appDependencies = rootProject.ext.appDependencies
+    def appTestDependencies = rootProject.ext.appTestDependencies
+
+    implementation project(':Domain')
+    implementation project(':Data')
+
+    implementation appDependencies.kotlin
+    implementation appDependencies.rxAndroid
+    implementation appDependencies.rxKotlin
+    implementation appDependencies.javaxInject
+    implementation appDependencies.constraintLayout
+    implementation appDependencies.androidAnnotations
+    implementation appDependencies.androidSupportV4
+    implementation appDependencies.androidSupportV13
+    implementation appDependencies.appCompatV7
+    implementation appDependencies.supportRecyclerView
+    implementation appDependencies.supportDesign
+    implementation appDependencies.timber
+    implementation appDependencies.glide
+    implementation appDependencies.dagger
+    implementation appDependencies.daggerSupport
+
+    implementation appDependencies.archRuntime
+    implementation appDependencies.archExtensions
+
+
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    kapt appDependencies.daggerCompiler
+    kapt appDependencies.daggerProcessor
+
+    //Test
+    testImplementation appTestDependencies.jUnit
+
+    /*androidTestImplementation(appTestDependencies.espressoCore) {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'support-compat'
+    }
+    androidTestImplementation(appTestDependencies.androidRunner) {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'support-compat'
+    }
+    androidTestImplementation(appTestDependencies.androidRules) {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'support-compat'
+    }
+    androidTestImplementation(appTestDependencies.espressoIntents) {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'support-compat'
+    }*/
+    /*androidTestImplementation(appTestDependencies.espressoContrib) {
+        exclude module: 'support-compat'
+        exclude module: 'appcompat'
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-v4'
+        exclude module: 'support-v13'
+        exclude module: 'support-annotations'
+        exclude module: 'recyclerview-v7'
+        exclude module: 'design'
+    }*/
+}

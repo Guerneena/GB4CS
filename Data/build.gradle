@@ -1,0 +1,18 @@
+apply plugin: 'kotlin'
+
+dependencies {
+    def dataDependencies = rootProject.ext.dataDependencies
+
+    implementation project(':Domain')
+
+    implementation dataDependencies.dagger
+    implementation dataDependencies.javaxInject
+    implementation dataDependencies.javaxAnnotation
+    implementation dataDependencies.rxKotlin
+    implementation dataDependencies.retrofit
+    implementation dataDependencies.retrofitRxJavaAdapter
+    implementation dataDependencies.retrofitConverterGson
+    implementation dataDependencies.gson
+    implementation dataDependencies.okHttp
+    implementation dataDependencies.okHttpLogger
+}

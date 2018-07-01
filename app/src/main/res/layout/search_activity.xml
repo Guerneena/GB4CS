@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.hklouch.ui.search.SearchActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        <android.support.v7.widget.SearchView
+            android:id="@+id/search_toolbar_searchview"
+            style="@style/AppTheme.TextAppearance.white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:iconifiedByDefault="false"
+            app:queryBackground="@color/translucent"
+            app:queryHint="@string/search_query_hint"
+            app:searchHintIcon="@null"
+            app:searchIcon="@null"
+            app:submitBackground="@color/translucent"/>
+
+    </android.support.v7.widget.Toolbar>
+
+    <include layout="@layout/repo_list_layout"
+             android:layout_width="match_parent"
+             android:layout_height="0dp"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintTop_toBottomOf="@id/toolbar"/>
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        tools:visibility="visible"/>
+
+
+</android.support.constraint.ConstraintLayout>

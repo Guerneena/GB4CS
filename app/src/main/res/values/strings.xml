@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">GitHubRepos4Cs</string>
+    <string name="repo_list_error">A problem occurred</string>
+    <string name="repo_list_menu_search">Search a repository</string>
+    <string name="search_activity_title">SearchActivity</string>
+    <string name="search_query_hint">Search a repository</string>
+</resources>
