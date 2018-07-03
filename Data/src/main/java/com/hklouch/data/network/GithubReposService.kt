@@ -3,16 +3,20 @@ package com.hklouch.data.network
 import com.hklouch.data.model.ProjectJson
 import com.hklouch.data.model.ProjectSearchResponse
 import io.reactivex.Observable
+import retrofit2.adapter.rxjava2.Result
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface GithubReposService {
 
     @GET("repositories")
-    fun getProjects(@Query("since") since: String? = null): Observable<List<ProjectJson>>
+    fun getProjects(@Query("since") since: Int?): Observable<Result<List<ProjectJson>>>
 
     @GET("search/repositories")
-    fun search(@Query("q") query: String): Observable<ProjectSearchResponse>
+    fun search(@Query("q") query: String,
+               @Query("per_page") resultsPerPage: Int?,
+               @Query("page") page: Int?
+    ): Observable<Result<ProjectSearchResponse>>
 
 
 }

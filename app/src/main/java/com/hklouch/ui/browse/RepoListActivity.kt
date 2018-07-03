@@ -2,47 +2,39 @@ package com.hklouch.ui.browse
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import com.hklouch.di.getViewModel
 import com.hklouch.githubrepos4cs.R
 import com.hklouch.ui.State
-import com.hklouch.ui.State.Error
-import com.hklouch.ui.State.Loading
-import com.hklouch.ui.State.Success
+import com.hklouch.ui.model.UiPagingModel
 import com.hklouch.ui.model.UiProjectItem
 import com.hklouch.ui.search.SearchActivity
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.repo_list_activity.*
-import kotlinx.android.synthetic.main.repo_list_layout.*
-import timber.log.Timber
 import javax.inject.Inject
 
-class RepoListActivity : AppCompatActivity() {
 
-    @Inject lateinit var browseAdapter: BrowseAdapter
+class RepoListActivity : AppCompatActivity(), ReposListFragment.Delegate {
+
     @Inject lateinit var viewModelFactory: RepoListViewModelFactory
     private lateinit var viewModel: RepoListViewModel
 
+    /* ***************** */
+    /*     Life cycle    */
+    /* ***************** */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AndroidInjection.inject(this)
-        setContentView(R.layout.repo_list_activity)
         viewModel = getViewModel { viewModelFactory.supply() }
-        setupPublicReposRecycler()
 
-    }
+        if (savedInstanceState == null) {
+            fragmentManager.beginTransaction()
+                    .add(android.R.id.content, ReposListFragment())
+                    .commit()
+        }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.getPublicRepos().observe(this, Observer<State<List<UiProjectItem>>> {
-            it?.let { handleState(it) }
-        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -61,47 +53,20 @@ class RepoListActivity : AppCompatActivity() {
         }
     }
 
-    private fun handleState(resource: State<List<UiProjectItem>>) {
-        when (resource) {
-            is Success -> displaySuccess(resource.data)
-            is Loading -> {
-                progress.visibility = View.VISIBLE
-                repo_list.visibility = View.GONE
-            }
-            is Error -> {
-                progress.visibility = View.GONE
-                repo_list.visibility = View.GONE
-
-                Snackbar.make(findViewById(android.R.id.content),
-                              R.string.repo_list_error,
-                              Snackbar.LENGTH_INDEFINITE).show()
-                Timber.e(resource.throwable)
-            }
-        }
+    override fun onNextPageRequested(next: Int) {
+        viewModel.fetchPublicRepos(next)
     }
 
-    private fun setupPublicReposRecycler() {
-        browseAdapter.projectListener = projectListener
-        repo_list.layoutManager = LinearLayoutManager(this)
-        repo_list.adapter = browseAdapter
-        progress.visibility = View.VISIBLE
+    override fun onRetryRequested(next: Int) {
+        onNextPageRequested(next)
     }
 
-    private fun displaySuccess(projects: List<UiProjectItem>) {
-        progress.visibility = View.GONE
-        projects.let {
-            browseAdapter.projects = it
-            browseAdapter.notifyDataSetChanged()
-            repo_list.visibility = View.VISIBLE
-        }
+    override fun onObservePublicRepos(observer: Observer<State<UiPagingModel>>) {
+        viewModel.getPublicRepos().observe(this, observer)
     }
 
-    private val projectListener = object : ProjectListener {
-
-        override fun onProjectClicked(projectId: String) {
-            //TODO goto details
-        }
+    override fun onLoadSuccess() {
+        //nothing
     }
-
 }
 

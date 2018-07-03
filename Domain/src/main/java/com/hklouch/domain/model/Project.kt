@@ -1,6 +1,6 @@
 package com.hklouch.domain.model
 
-class Project(val id: String,
+data class Project(val id: Int,
               val url: String,
               val name: String,
               val fullName: String,

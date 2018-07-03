@@ -3,6 +3,7 @@ package com.hklouch.di
 import android.app.Application
 import android.content.Context
 import com.hklouch.ui.browse.RepoListActivity
+import com.hklouch.ui.browse.ReposListFragment
 import com.hklouch.ui.search.SearchActivity
 import dagger.Binds
 import dagger.Module
@@ -19,5 +20,8 @@ abstract interface AppModule {
 
     @ContributesAndroidInjector
     abstract fun contributesSearchActivity(): SearchActivity
+
+    @ContributesAndroidInjector
+    abstract fun contributesReposListFragment(): ReposListFragment
 
 }

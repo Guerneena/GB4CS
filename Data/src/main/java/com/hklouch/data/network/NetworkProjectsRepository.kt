@@ -1,7 +1,7 @@
 package com.hklouch.data.network
 
-import com.hklouch.data.model.toProject
-import com.hklouch.domain.model.Project
+import com.hklouch.data.model.toProjectList
+import com.hklouch.domain.model.ProjectList
 import com.hklouch.domain.repository.ProjectsRepository
 import io.reactivex.Observable
 import javax.inject.Inject
@@ -9,13 +9,23 @@ import javax.inject.Inject
 
 class NetworkProjectsRepository @Inject constructor(private val githubReposService: GithubReposService) : ProjectsRepository {
 
-    override fun searchProjects(query: String): Observable<List<Project>> {
-        return githubReposService.search(query).map { it.projects.map { it.toProject() } }
+    override fun searchProjects(query: String, page: Int?, resultsPerPage: Int?): Observable<ProjectList> {
+        return githubReposService.search(query = query, page = page, resultsPerPage = resultsPerPage ?: 40).map {
+            it.response()?.let {
+                val pageLinks = PageLinks(it.headers())
+                it.body()?.toProjectList(pageLinks.nextIndex, pageLinks.lastIndex)
+            } ?: throw it.error()!!
+        }
     }
 
 
-    override fun getProjects(next: String?): Observable<List<Project>> {
-        return githubReposService.getProjects(next).map { it.map { it.toProject() } }
-//            it.error()?.let { throw it } ?: it.response()!!.body()!!.toProjectList()
+    override fun getProjects(next: Int?): Observable<ProjectList> {
+        return githubReposService.getProjects(next).map {
+            it.response()?.let {
+                val pageLinks = PageLinks(it.headers())
+                it.body()?.toProjectList(pageLinks.nextIndex, pageLinks.lastIndex)
+            } ?: throw it.error()!!
+        }
     }
+
 }

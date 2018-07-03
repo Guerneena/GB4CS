@@ -2,7 +2,7 @@ package com.hklouch.data.model
 
 import com.google.gson.annotations.SerializedName
 
-class ProjectJson(@SerializedName("id") val id: String,
+data class ProjectJson(@SerializedName("id") val id: Int,
                   @SerializedName("url") val url: String,
                   @SerializedName("name") val name: String,
                   @SerializedName("full_name") val fullName: String,

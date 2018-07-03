@@ -15,19 +15,19 @@ import javax.inject.Inject
 
 class BrowseAdapter @Inject constructor() : RecyclerView.Adapter<ViewHolder>() {
 
-    var projects: List<UiProjectItem> = arrayListOf()
-    var projectListener: ProjectListener? = null
+    var projects: List<UiProjectItem> = listOf()
+    var projectItemListener: ProjectListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater
                 .from(parent.context)
-                .inflate(R.layout.project_list_item, parent, false)
+                .inflate(R.layout.repo_list_item, parent, false)
         return ViewHolder(itemView)
     }
 
-    override fun getItemCount(): Int {
-        return projects.count()
-    }
+    override fun getItemCount() = projects.count()
+
+    override fun getItemId(position: Int) = projects[position].id.toLong()
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val project = projects[position]
@@ -41,9 +41,20 @@ class BrowseAdapter @Inject constructor() : RecyclerView.Adapter<ViewHolder>() {
 
 
         holder.itemView.setOnClickListener {
-            projectListener?.onProjectClicked(project.id)
+            projectItemListener?.onProjectClicked(project.id)
         }
     }
+
+    fun updateProjects(newProjects: List<UiProjectItem>) {
+        projects += newProjects
+    }
+
+    fun clearData() {
+        projects = listOf()
+    }
+
+
+    fun containsElements() = itemCount > 0
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var ownerImage: ImageView = view.findViewById(R.id.owner_image)

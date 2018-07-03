@@ -3,9 +3,6 @@ package com.hklouch.data.model
 import com.hklouch.domain.model.Project
 import com.hklouch.domain.model.ProjectList
 
-fun ProjectListJson.toProjectList() = ProjectList(nextPage = nextPage,
-                                                  projects = projects.map { it.toProject() })
-
 fun ProjectJson.toProject() = Project(id = id,
                                       url = url,
                                       name = name,
@@ -21,3 +18,11 @@ fun ProjectJson.toProject() = Project(id = id,
                                       issuesUrl = issuesUrl,
                                       contributorsUrl = contributorsUrl,
                                       branchesUrl = branchesUrl)
+
+fun ProjectSearchResponse.toProjectList(nextPage: Int?, lastPage: Int?) = ProjectList(nextPage = nextPage,
+                                                                                      lastPage = lastPage,
+                                                                                      projects = projects.map { it.toProject() })
+
+fun Collection<ProjectJson>.toProjectList(nextPage: Int?, lastPage: Int?) = ProjectList(nextPage = nextPage,
+                                                                                        lastPage = lastPage,
+                                                                                        projects = map { it.toProject() })

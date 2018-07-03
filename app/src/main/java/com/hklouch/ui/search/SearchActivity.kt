@@ -4,34 +4,24 @@ import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView.OnQueryTextListener
-import android.view.View
 import com.hklouch.di.getViewModel
 import com.hklouch.githubrepos4cs.R
 import com.hklouch.ui.State
-import com.hklouch.ui.State.Error
-import com.hklouch.ui.State.Loading
-import com.hklouch.ui.State.Success
-import com.hklouch.ui.browse.BrowseAdapter
-import com.hklouch.ui.browse.ProjectListener
-import com.hklouch.ui.model.UiProjectItem
+import com.hklouch.ui.browse.ReposListFragment
+import com.hklouch.ui.model.UiPagingModel
 import com.hklouch.utils.hideKeyboard
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.repo_list_layout.*
 import kotlinx.android.synthetic.main.search_activity.*
-import timber.log.Timber
 import javax.inject.Inject
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity(), ReposListFragment.Delegate {
 
     companion object {
         fun createIntent(source: Activity) = Intent(source, SearchActivity::class.java)
     }
 
-    @Inject lateinit var browseAdapter: BrowseAdapter
     @Inject lateinit var viewModelFactory: SearchViewModelFactory
     private lateinit var viewModel: SearchViewModel
 
@@ -41,18 +31,17 @@ class SearchActivity : AppCompatActivity() {
         viewModel = getViewModel { viewModelFactory.supply() }
 
         setContentView(R.layout.search_activity)
+
+        if (savedInstanceState == null) {
+            fragmentManager.beginTransaction()
+                    .add(R.id.repo_list_container, ReposListFragment())
+                    .commit()
+        }
+
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         setupSearchView()
-        setupPublicReposRecycler()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.getResultRepos().observe(this, Observer<State<List<UiProjectItem>>> {
-            it?.let { handleState(it) }
-        })
     }
 
     override fun onSupportNavigateUp() = finish().let { true }
@@ -60,7 +49,8 @@ class SearchActivity : AppCompatActivity() {
     private fun setupSearchView() {
         search_toolbar_searchview.setOnQueryTextListener(object : OnQueryTextListener {
             override fun onQueryTextSubmit(text: String): Boolean {
-                viewModel.searchRepos(text)
+                (fragmentManager.findFragmentById(R.id.repo_list_container) as? ReposListFragment)?.clearData()
+                viewModel.submitQuery(text)
                 return true
             }
 
@@ -70,50 +60,23 @@ class SearchActivity : AppCompatActivity() {
         })
     }
 
-    private fun handleState(resource: State<List<UiProjectItem>>) {
-        when (resource) {
-            is Success -> displaySuccess(resource.data)
-            is Loading -> {
-                progress.visibility = View.VISIBLE
-                repo_list.visibility = View.GONE
-            }
-            is Error -> {
-                progress.visibility = View.GONE
-                repo_list.visibility = View.GONE
-
-                Snackbar.make(findViewById(android.R.id.content),
-                              R.string.repo_list_error,
-                              Snackbar.LENGTH_INDEFINITE).show()
-                Timber.e(resource.throwable)
-            }
-        }
+    override fun onNextPageRequested(next: Int) {
+        viewModel.requestNextPage(next)
     }
 
-    private fun setupPublicReposRecycler() {
-        browseAdapter.projectListener = projectListener
-        repo_list.layoutManager = LinearLayoutManager(this)
-        repo_list.adapter = browseAdapter
+    override fun onRetryRequested(next: Int) {
+        viewModel.retry()
     }
 
-    private fun displaySuccess(projects: List<UiProjectItem>) {
+    override fun onObservePublicRepos(observer: Observer<State<UiPagingModel>>) {
+        viewModel.getResultRepos().observe(this, observer)
+    }
+
+    override fun onLoadSuccess() {
         search_toolbar_searchview.apply {
             hideKeyboard()
             clearFocus()
         }
-        progress.visibility = View.GONE
-        projects.let {
-            browseAdapter.projects = it
-            browseAdapter.notifyDataSetChanged()
-            repo_list.visibility = View.VISIBLE
-        }
     }
-
-    private val projectListener = object : ProjectListener {
-
-        override fun onProjectClicked(projectId: String) {
-            //TODO goto details
-        }
-    }
-
 
 }
