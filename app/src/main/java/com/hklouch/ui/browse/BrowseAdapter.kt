@@ -10,12 +10,12 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.hklouch.githubrepos4cs.R
 import com.hklouch.ui.browse.BrowseAdapter.ViewHolder
-import com.hklouch.ui.model.UiProjectItem
+import com.hklouch.ui.model.UiProjectPreviewItem
 import javax.inject.Inject
 
 class BrowseAdapter @Inject constructor() : RecyclerView.Adapter<ViewHolder>() {
 
-    var models: List<UiProjectItem> = listOf()
+    var models: List<UiProjectPreviewItem> = listOf()
     var projectItemListener: ProjectListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -45,14 +45,13 @@ class BrowseAdapter @Inject constructor() : RecyclerView.Adapter<ViewHolder>() {
         }
     }
 
-    fun updateProjects(newProjects: List<UiProjectItem>) {
+    fun updateProjects(newProjects: List<UiProjectPreviewItem>) {
         models += newProjects
     }
 
     fun clearData() {
         models = listOf()
     }
-
 
     fun containsElements() = itemCount > 0
 

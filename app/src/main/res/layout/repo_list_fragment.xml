@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.hklouch.ui.browse.RepoListActivity">
+    tools:context="com.hklouch.ui.browse.BrowseProjectsActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/repo_list"
@@ -19,8 +19,8 @@
         android:id="@+id/progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:visibility="invisible"
-        tools:visibility="visible"
-        android:layout_gravity="center"/>
+        tools:visibility="visible"/>
 
 </FrameLayout>

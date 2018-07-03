@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/repo_item_height"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
 
     <ImageView
         android:id="@+id/owner_image"
@@ -27,6 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/value_8dp"
         android:layout_marginStart="@dimen/value_16dp"
+        style="@style/AppTheme.TextAppearance.Title"
         app:layout_constraintBottom_toTopOf="@id/project_name_text"
         app:layout_constraintStart_toEndOf="@id/owner_image"
         app:layout_constraintTop_toTopOf="@id/owner_image"

@@ -1,6 +1,8 @@
 package com.hklouch.data.network
 
+import com.hklouch.data.model.toProject
 import com.hklouch.data.model.toProjectList
+import com.hklouch.domain.model.Project
 import com.hklouch.domain.model.ProjectList
 import com.hklouch.domain.repository.ProjectsRepository
 import io.reactivex.Observable
@@ -23,7 +25,7 @@ class NetworkProjectsRepository @Inject constructor(private val githubReposServi
                 val nextIndex = pageLinks.nextPage((SEARCH_PAGING_PARAM))
                 val lastIndex = pageLinks.lastPage((SEARCH_PAGING_PARAM))
                 it.body()?.toProjectList(nextIndex, lastIndex)
-            } ?: throw it.error()!!
+            } ?: it.error()?.let { throw it } ?: throw Exception("Unknown problem occurred")
         }
     }
 
@@ -35,8 +37,12 @@ class NetworkProjectsRepository @Inject constructor(private val githubReposServi
                 val nextIndex = pageLinks.nextPage((BROWSE_PAGING_PARAM))
                 val lastIndex = pageLinks.lastPage((BROWSE_PAGING_PARAM))
                 it.body()?.toProjectList(nextIndex, lastIndex)
-            } ?: throw it.error()!!
+            } ?: it.error()?.let { throw it } ?: throw Exception("Unknown problem occurred")
         }
+    }
+
+    override fun getProject(ownerName: String, projectName: String): Observable<Project> {
+        return githubReposService.getProject(ownerName, projectName).map { it.toProject() }
     }
 
 }

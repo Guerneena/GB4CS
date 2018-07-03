@@ -3,8 +3,17 @@
     <string name="avatar">User avatar</string>
     <string name="repo_list_error">A error occurred</string>
     <string name="repo_list_menu_search">Search a repository</string>
-    <string name="search_activity_title">SearchActivity</string>
+    <string name="search_activity_title">Search repository</string>
+    <string name="browser_activity_title">Browse repositories</string>
     <string name="search_query_hint">Search a repository</string>
     <string name="retry">Retry</string>
-    <string name="title_activity_project_detail">ProjectDetailActivity</string>
+    <string name="title_activity_project_detail">Details</string>
+
+
+    <string name="project_detail_stars">Stars</string>
+    <string name="project_detail_forks">Forks</string>
+    <string name="project_detail_watchers">Watchers</string>
+    <string name="project_detail_issues">Issues</string>
+    <string name="project_detail_is_fork">Is a fork</string>
+    <string name="project_detail_not_fork">Not a fork</string>
 </resources>

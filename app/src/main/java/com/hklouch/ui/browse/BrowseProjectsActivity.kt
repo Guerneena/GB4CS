@@ -5,16 +5,17 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import com.hklouch.di.getViewModel
 import com.hklouch.githubrepos4cs.R
 import com.hklouch.ui.State
 import com.hklouch.ui.model.UiPagingModel
 import com.hklouch.ui.search.SearchActivity
+import com.hklouch.utils.getViewModel
 import dagger.android.AndroidInjection
+import kotlinx.android.synthetic.main.toolbar_layout.*
 import javax.inject.Inject
 
 
-class RepoListActivity : AppCompatActivity(), ReposListFragment.Delegate {
+class BrowseProjectsActivity : AppCompatActivity(), ReposListFragment.Delegate {
 
     @Inject lateinit var viewModelFactory: RepoListViewModelFactory
     private lateinit var viewModel: RepoListViewModel
@@ -28,9 +29,13 @@ class RepoListActivity : AppCompatActivity(), ReposListFragment.Delegate {
         AndroidInjection.inject(this)
         viewModel = getViewModel { viewModelFactory.supply() }
 
+        setContentView(R.layout.browse_projects_activity)
+
+        setSupportActionBar(toolbar)
+
         if (savedInstanceState == null) {
             fragmentManager.beginTransaction()
-                    .add(android.R.id.content, ReposListFragment())
+                    .add(R.id.repo_list_container, ReposListFragment())
                     .commit()
         }
 

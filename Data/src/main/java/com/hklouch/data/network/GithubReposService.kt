@@ -5,6 +5,7 @@ import com.hklouch.data.model.ProjectSearchResponse
 import io.reactivex.Observable
 import retrofit2.adapter.rxjava2.Result
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface GithubReposService {
@@ -17,6 +18,10 @@ interface GithubReposService {
                @Query("per_page") resultsPerPage: Int?,
                @Query("page") page: Int?
     ): Observable<Result<ProjectSearchResponse>>
+
+    @GET("repos/{owner}/{project}")
+    fun getProject(@Path("owner") ownerName: String,
+                   @Path("project") projectName: String): Observable<ProjectJson>
 
 
 }

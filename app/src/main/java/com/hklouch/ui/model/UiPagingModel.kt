@@ -4,8 +4,8 @@ import com.hklouch.domain.model.ProjectList
 
 data class UiPagingModel(val nextPage: Int?,
                          val lastPage: Int?,
-                         val projects: List<UiProjectItem>)
+                         val projects: List<UiProjectPreviewItem>)
 
 fun ProjectList.toUiPagingModel() = UiPagingModel(nextPage = nextPage,
                                                   lastPage = lastPage,
-                                                  projects = projects.map { it.toUiProjectItem() })
+                                                  projects = projects.map { it.toUiProjectPreviewItem() })

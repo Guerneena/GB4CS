@@ -6,7 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.SearchView.OnQueryTextListener
-import com.hklouch.di.getViewModel
+import com.hklouch.utils.getViewModel
 import com.hklouch.githubrepos4cs.R
 import com.hklouch.ui.State
 import com.hklouch.ui.browse.ReposListFragment

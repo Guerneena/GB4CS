@@ -32,14 +32,6 @@ class PagingRecyclerAdapter<T : RecyclerView.ViewHolder>(
 
     private val observerAdapter = RelayAdapterObserver(adapter = this, defaultOnChangeBehavior = { onDelegateAdapterContentChanged() })
 
-/*
-    var maxItems = 0
-        set(value) {
-            field = value
-            onDelegateAdapterContentChanged()
-        }
-*/
-
     var nextPosition = 0
         set(value) {
             field = value
@@ -182,7 +174,6 @@ private class RelayAdapterObserver(private val adapter: Adapter<*>, private val 
     }
 
 }
-
 
 /**
  * Loading holder that does nothing but show a loader (or a text or anything)

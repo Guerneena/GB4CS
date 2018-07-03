@@ -12,12 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
+        android:elevation="@dimen/value_8dp"
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/AppTheme.PopupOverlay">
 
         <android.support.v7.widget.SearchView
             android:id="@+id/search_toolbar_searchview"
-            style="@style/AppTheme.TextAppearance.white"
+            style="@style/AppTheme.TextAppearance.White"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:iconifiedByDefault="false"

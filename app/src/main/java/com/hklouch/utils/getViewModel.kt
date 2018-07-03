@@ -1,4 +1,4 @@
-package com.hklouch.di
+package com.hklouch.utils
 
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.ViewModel

@@ -17,6 +17,7 @@ import com.hklouch.ui.State.Error
 import com.hklouch.ui.State.Loading
 import com.hklouch.ui.State.Success
 import com.hklouch.ui.browse.PagingRecyclerAdapter.RefreshCallbacks
+import com.hklouch.ui.detail.ProjectDetailActivity
 import com.hklouch.ui.model.UiPagingModel
 import com.hklouch.utils.rootView
 import dagger.android.AndroidInjection
@@ -59,11 +60,6 @@ class ReposListFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setupPublicReposRecycler()
-    }
-
-
-    override fun onResume() {
-        super.onResume()
         delegate?.onObservePublicRepos(Observer {
             it?.let { handleState(it) }
         })
@@ -86,7 +82,6 @@ class ReposListFragment : Fragment() {
             }
             is Error -> {
                 progress.visibility = View.GONE
-                repo_list.visibility = View.GONE
 
                 pagingAdapter.onError(getString(R.string.repo_list_error))
 
@@ -109,7 +104,6 @@ class ReposListFragment : Fragment() {
 
         progress.visibility = View.GONE
         projects.let {
-            //            pagingAdapter.maxItems = it.lastPage ?: 0
             pagingAdapter.nextPosition = it.nextPage ?: 0
             browseAdapter.updateProjects(it.projects)
             browseAdapter.notifyDataSetChanged()
@@ -127,7 +121,7 @@ class ReposListFragment : Fragment() {
     private val projectListener = object : ProjectListener {
 
         override fun onProjectClicked(project: Project) {
-            //TODO goto details
+            startActivity(ProjectDetailActivity.createIntent(activity, ownerName = project.ownerName, projectName = project.name))
         }
     }
 
