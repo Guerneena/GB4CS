@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.hklouch.domain.model.Project
 import com.hklouch.githubrepos4cs.R
 import com.hklouch.ui.State
 import com.hklouch.ui.State.Error
@@ -125,7 +126,7 @@ class ReposListFragment : Fragment() {
 
     private val projectListener = object : ProjectListener {
 
-        override fun onProjectClicked(projectId: Int) {
+        override fun onProjectClicked(project: Project) {
             //TODO goto details
         }
     }

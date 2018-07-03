@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/value_80dp"
+    android:layout_height="@dimen/repo_item_height"
     android:clickable="true"
     android:focusable="true">
 
@@ -27,8 +27,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/value_8dp"
         android:layout_marginStart="@dimen/value_16dp"
-        app:layout_constraintStart_toEndOf="@id/owner_image"
         app:layout_constraintBottom_toTopOf="@id/project_name_text"
+        app:layout_constraintStart_toEndOf="@id/owner_image"
         app:layout_constraintTop_toTopOf="@id/owner_image"
         tools:text="Name"/>
 

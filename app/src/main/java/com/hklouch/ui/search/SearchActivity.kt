@@ -25,6 +25,10 @@ class SearchActivity : AppCompatActivity(), ReposListFragment.Delegate {
     @Inject lateinit var viewModelFactory: SearchViewModelFactory
     private lateinit var viewModel: SearchViewModel
 
+    /* ***************** */
+    /*     Life cycle    */
+    /* ***************** */
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AndroidInjection.inject(this)
@@ -46,6 +50,10 @@ class SearchActivity : AppCompatActivity(), ReposListFragment.Delegate {
 
     override fun onSupportNavigateUp() = finish().let { true }
 
+    /* **************** */
+    /*      Private     */
+    /* **************** */
+
     private fun setupSearchView() {
         search_toolbar_searchview.setOnQueryTextListener(object : OnQueryTextListener {
             override fun onQueryTextSubmit(text: String): Boolean {
@@ -59,6 +67,10 @@ class SearchActivity : AppCompatActivity(), ReposListFragment.Delegate {
             }
         })
     }
+
+    /* ***************** */
+    /*  RepoList events  */
+    /* ***************** */
 
     override fun onNextPageRequested(next: Int) {
         viewModel.requestNextPage(next)

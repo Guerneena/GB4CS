@@ -1,6 +1,10 @@
 package com.hklouch.data.network
 
 import okhttp3.Headers
+import okhttp3.HttpUrl
+import java.net.URL
+import java.util.Collections.emptyMap
+
 
 /**
  * Parse links from executed method
@@ -9,22 +13,16 @@ import okhttp3.Headers
  */
 class PageLinks(headers: Headers) {
 
-    var first: String? = null
+    var first: URL? = null
         private set
 
-    var last: String? = null
+    var last: URL? = null
         private set
 
-    var next: String? = null
+    var next: URL? = null
         private set
 
-    var prev: String? = null
-        private set
-
-    var lastIndex: Int? = null
-        private set
-
-    var nextIndex: Int? = null
+    var prev: URL? = null
         private set
 
     init {
@@ -50,29 +48,50 @@ class PageLinks(headers: Headers) {
                     if (relValue.startsWith("\"") && relValue.endsWith("\""))
                         relValue = relValue.substring(1, relValue.length - 1)
 
-                    val index: Int? = linkPart.split("=")
-                            .let { if (it.size > 1) it.last() else null }
-                            .toIntOrNull()
+                    val url = linkPart.toUrl()
 
                     when {
-                        META_FIRST == relValue -> first = linkPart
-                        META_LAST == relValue -> {
-                            last = linkPart
-                            lastIndex = index
-                        }
-                        META_NEXT == relValue -> {
-                            next = linkPart
-                            nextIndex = index
-                        }
-                        META_PREV == relValue -> prev = linkPart
+                        META_FIRST == relValue -> first = url
+                        META_LAST == relValue -> last = url
+                        META_NEXT == relValue -> next = url
+                        META_PREV == relValue -> prev = url
                     }
                 }
             }
         } else {
-            next = headers.get(HEADER_NEXT)
-            last = headers.get(HEADER_LAST)
+            next = headers.get(HEADER_NEXT).toUrl()
+            last = headers.get(HEADER_LAST).toUrl()
         }
     }
+
+    /* **************** */
+    /*      Methods     */
+    /* **************** */
+
+    fun getPagingParamValue(url: URL, param: String): Int? {
+        return parametersFromUrl(url)[param]?.firstOrNull { it != null }.toIntOrNull()
+    }
+
+    private fun parametersFromUrl(url: URL): MutableMap<String, MutableList<String?>> {
+        val m = mutableMapOf<String, MutableList<String?>>()
+        return if (url.query.isNullOrBlank()) {
+            emptyMap()
+        } else url.query.split("&")
+                .map(this::extractParameterMap)
+                .groupByTo(m, { it.first }, { it.second })
+    }
+
+
+    private fun extractParameterMap(it: String): Pair<String, String?> {
+        val idx = it.indexOf("=")
+        val key = if (idx > 0) it.substring(0, idx) else it
+        val value = if (idx > 0 && it.length > idx + 1) it.substring(idx + 1) else null
+        return key to value
+    }
+
+    /* ***************** */
+    /*     Extensions    */
+    /* ***************** */
 
     private fun String?.toIntOrNull(): Int? = this?.let {
         try {
@@ -80,6 +99,10 @@ class PageLinks(headers: Headers) {
         } catch (e: NumberFormatException) {
             null
         }
+    }
+
+    private fun String?.toUrl(): URL? = this?.let {
+        HttpUrl.parse(this)?.url()
     }
 
     companion object {
@@ -99,3 +122,6 @@ class PageLinks(headers: Headers) {
 
     }
 }
+
+fun PageLinks.nextPage(param: String) = next?.let { getPagingParamValue(it, param) }
+fun PageLinks.lastPage(param: String) = last?.let { getPagingParamValue(it, param) }

@@ -6,4 +6,5 @@
     <string name="search_activity_title">SearchActivity</string>
     <string name="search_query_hint">Search a repository</string>
     <string name="retry">Retry</string>
+    <string name="title_activity_project_detail">ProjectDetailActivity</string>
 </resources>

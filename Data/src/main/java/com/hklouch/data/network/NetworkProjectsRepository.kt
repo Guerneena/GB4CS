@@ -9,11 +9,20 @@ import javax.inject.Inject
 
 class NetworkProjectsRepository @Inject constructor(private val githubReposService: GithubReposService) : ProjectsRepository {
 
+    companion object {
+        private const val SEARCH_PAGING_PARAM = "page"
+        private const val BROWSE_PAGING_PARAM = "since"
+        private const val DEFAULT_RESULTS_PER_PAGE = 50
+    }
+
     override fun searchProjects(query: String, page: Int?, resultsPerPage: Int?): Observable<ProjectList> {
-        return githubReposService.search(query = query, page = page, resultsPerPage = resultsPerPage ?: 40).map {
+        return githubReposService.search(query = query, page = page, resultsPerPage = resultsPerPage
+                ?: DEFAULT_RESULTS_PER_PAGE).map {
             it.response()?.let {
                 val pageLinks = PageLinks(it.headers())
-                it.body()?.toProjectList(pageLinks.nextIndex, pageLinks.lastIndex)
+                val nextIndex = pageLinks.nextPage((SEARCH_PAGING_PARAM))
+                val lastIndex = pageLinks.lastPage((SEARCH_PAGING_PARAM))
+                it.body()?.toProjectList(nextIndex, lastIndex)
             } ?: throw it.error()!!
         }
     }
@@ -23,7 +32,9 @@ class NetworkProjectsRepository @Inject constructor(private val githubReposServi
         return githubReposService.getProjects(next).map {
             it.response()?.let {
                 val pageLinks = PageLinks(it.headers())
-                it.body()?.toProjectList(pageLinks.nextIndex, pageLinks.lastIndex)
+                val nextIndex = pageLinks.nextPage((BROWSE_PAGING_PARAM))
+                val lastIndex = pageLinks.lastPage((BROWSE_PAGING_PARAM))
+                it.body()?.toProjectList(nextIndex, lastIndex)
             } ?: throw it.error()!!
         }
     }

@@ -9,7 +9,6 @@ import com.hklouch.di.getViewModel
 import com.hklouch.githubrepos4cs.R
 import com.hklouch.ui.State
 import com.hklouch.ui.model.UiPagingModel
-import com.hklouch.ui.model.UiProjectItem
 import com.hklouch.ui.search.SearchActivity
 import dagger.android.AndroidInjection
 import javax.inject.Inject
@@ -52,6 +51,10 @@ class RepoListActivity : AppCompatActivity(), ReposListFragment.Delegate {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    /* ***************** */
+    /*  RepoList events  */
+    /* ***************** */
 
     override fun onNextPageRequested(next: Int) {
         viewModel.fetchPublicRepos(next)

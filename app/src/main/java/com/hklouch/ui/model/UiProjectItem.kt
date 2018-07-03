@@ -3,7 +3,8 @@ package com.hklouch.ui.model
 import com.hklouch.domain.model.Project
 
 
-data class UiProjectItem(val id: Int,
+data class UiProjectItem(val project: Project,
+                         val id: Int,
                          val url: String,
                          val name: String,
                          val fullName: String,
@@ -14,7 +15,8 @@ data class UiProjectItem(val id: Int,
 )
 
 
-fun Project.toUiProjectItem() = UiProjectItem(id = id,
+fun Project.toUiProjectItem() = UiProjectItem(project = this,
+                                              id = id,
                                               url = url,
                                               name = name,
                                               fullName = fullName,
