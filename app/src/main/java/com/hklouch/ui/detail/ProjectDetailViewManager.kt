@@ -2,6 +2,7 @@ package com.hklouch.ui.detail
 
 import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -9,9 +10,11 @@ import com.hklouch.githubrepos4cs.R
 import com.hklouch.ui.model.UiProjectItem
 import com.hklouch.utils.drawableTop
 import com.hklouch.utils.getColorCompat
+import com.hklouch.utils.hide
+import com.hklouch.utils.show
 import com.hklouch.utils.tint
 
-class ProjectDetailViewManager(view: View, project: UiProjectItem) {
+class ProjectDetailViewManager(private val view: View) {
     private val ownerImageView: ImageView = view.findViewById(R.id.owner_image)
     private val ownerNameView: TextView = view.findViewById(R.id.owner_name_text)
     private val projectNameView: TextView = view.findViewById(R.id.project_name_text)
@@ -22,7 +25,36 @@ class ProjectDetailViewManager(view: View, project: UiProjectItem) {
     private val issuesCountView: TextView = view.findViewById(R.id.project_detail_issues)
     private val isAForkView: TextView = view.findViewById(R.id.project_detail_is_fork)
 
-    init {
+    private val progressBar: ProgressBar = view.findViewById(R.id.progress)
+    private val contentView: ProgressBar = view.findViewById(R.id.content_project_detail)
+
+    var isLoading: Boolean = false
+        set(value) {
+            field = value
+            if (value) {
+                progressBar.show()
+                contentView.hide()
+            } else {
+                progressBar.hide()
+                contentView.show()
+            }
+        }
+
+
+    var isErrorState: Boolean = false
+        set(value) {
+            field = value
+            if (value) {
+                progressBar.hide()
+                contentView.hide()
+            }
+        }
+
+
+    fun bind(project: UiProjectItem) {
+        isLoading = false
+        isErrorState = false
+
         ownerNameView.text = project.ownerName
         projectNameView.text = project.fullName
         projectDescriptionView.text = project.description

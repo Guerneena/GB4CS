@@ -8,10 +8,7 @@ dependencies {
     implementation domainDependencies.javaxInject
     implementation domainDependencies.javaxAnnotation
 
-    implementation domainTestDependencies.jUnit
-    implementation domainTestDependencies.mockito
-//    implementation domainTestDependencies.truth
-//    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    testImplementation domainTestDependencies.jUnit
+    testImplementation domainTestDependencies.mockito
+    testImplementation domainTestDependencies.truth
 }
-
-

@@ -7,7 +7,7 @@ import com.hklouch.domain.repository.ProjectsRepository
 import io.reactivex.Single
 import javax.inject.Inject
 
-class GetProjectDetailUseCase @Inject constructor(private val projectsRepository: ProjectsRepository) : SingleUseCase<Project, Params>() {
+open class GetProjectDetailUseCase @Inject constructor(private val projectsRepository: ProjectsRepository) : SingleUseCase<Project, Params>() {
 
     override fun buildUseCaseObservable(params: Params?): Single<Project> {
         if (params == null) throw IllegalArgumentException("Params can not be null")

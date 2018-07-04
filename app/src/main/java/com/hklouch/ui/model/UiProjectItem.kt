@@ -20,7 +20,8 @@ data class UiProjectItem(val project: Project,
                          val watchersCount: Int?,
                          val issuesUrl: String?,
                          val contributorsUrl: String?,
-                         val branchesUrl: String?
+                         val branchesUrl: String?,
+                         val pullsUrl: String?
 )
 
 
@@ -41,4 +42,5 @@ fun Project.toUiProjectItem() = UiProjectItem(project = this,
                                               watchersCount = watchersCount,
                                               issuesUrl = issuesUrl,
                                               contributorsUrl = contributorsUrl,
-                                              branchesUrl = branchesUrl)
+                                              branchesUrl = branchesUrl,
+                                              pullsUrl = pullsUrl)

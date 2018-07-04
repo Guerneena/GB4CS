@@ -3,14 +3,11 @@ package com.hklouch.ui.search
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.hklouch.domain.interactor.search.SearchProjectsUseCase
-import com.hklouch.domain.model.ProjectList
 import com.hklouch.ui.State
+import com.hklouch.ui.browse.ProjectsObserver
 import com.hklouch.ui.loading
 import com.hklouch.ui.model.UiPagingModel
-import com.hklouch.ui.model.toUiPagingModel
-import com.hklouch.ui.toState
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.observers.DisposableObserver
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
@@ -23,7 +20,6 @@ class SearchViewModelFactory @Inject constructor(private val searchProjectsUseCa
 
 class SearchViewModel(private val searchProjectsUseCase: SearchProjectsUseCase) : ViewModel() {
 
-
     private val liveData: MutableLiveData<State<UiPagingModel>> = MutableLiveData()
     private val querySubject = BehaviorSubject.create<SearchProjectsUseCase.Params>()
 
@@ -31,7 +27,7 @@ class SearchViewModel(private val searchProjectsUseCase: SearchProjectsUseCase) 
 
     init {
         disposable += querySubject.subscribe {
-            searchProjectsUseCase.execute(ProjectsSubscriber(), it)
+            searchProjectsUseCase.execute(ProjectsObserver(liveData), it)
         }
     }
 
@@ -50,24 +46,15 @@ class SearchViewModel(private val searchProjectsUseCase: SearchProjectsUseCase) 
     }
 
     fun requestNextPage(next: Int) {
-        liveData.postValue(loading())
-        querySubject.onNext(querySubject.value.copy(nextPage = next))
+        querySubject.value?.let {
+            liveData.postValue(loading())
+            querySubject.onNext(it.copy(nextPage = next))
+        }
     }
 
     fun retry() {
-        querySubject.onNext(querySubject.value)
-    }
-
-    inner class ProjectsSubscriber : DisposableObserver<ProjectList>() {
-        override fun onNext(result: ProjectList) {
-            liveData.postValue(result.toUiPagingModel().toState())
+        querySubject.value?.let {
+            querySubject.onNext(it)
         }
-
-        override fun onComplete() {}
-
-        override fun onError(e: Throwable) {
-            liveData.postValue(e.toState())
-        }
-
     }
 }

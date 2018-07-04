@@ -25,11 +25,11 @@ android {
     }
 }
 
-configurations.all rootProject.ext.get("forceVersions")
-
 dependencies {
     def appDependencies = rootProject.ext.appDependencies
     def appTestDependencies = rootProject.ext.appTestDependencies
+
+    def withoutSupportFragment = { exclude group: 'com.android.support', module: 'support-fragment' }
 
     implementation project(':Domain')
     implementation project(':Data')
@@ -48,36 +48,29 @@ dependencies {
     implementation appDependencies.timber
     implementation appDependencies.glide
     implementation appDependencies.dagger
-    implementation appDependencies.daggerSupport
+    implementation appDependencies.daggerSupport, withoutSupportFragment
 
     implementation appDependencies.archRuntime
     implementation appDependencies.archExtensions
 
-
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     kapt appDependencies.daggerCompiler
     kapt appDependencies.daggerProcessor
 
+    def withoutCompatAndAnnotations = {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'support-compat'
+    }
+
     //Test
     testImplementation appTestDependencies.jUnit
-
-    /*androidTestImplementation(appTestDependencies.espressoCore) {
-        exclude group: 'com.android.support', module: 'support-annotations'
-        exclude group: 'com.android.support', module: 'support-compat'
-    }
-    androidTestImplementation(appTestDependencies.androidRunner) {
-        exclude group: 'com.android.support', module: 'support-annotations'
-        exclude group: 'com.android.support', module: 'support-compat'
-    }
-    androidTestImplementation(appTestDependencies.androidRules) {
-        exclude group: 'com.android.support', module: 'support-annotations'
-        exclude group: 'com.android.support', module: 'support-compat'
-    }
-    androidTestImplementation(appTestDependencies.espressoIntents) {
-        exclude group: 'com.android.support', module: 'support-annotations'
-        exclude group: 'com.android.support', module: 'support-compat'
-    }*/
-    /*androidTestImplementation(appTestDependencies.espressoContrib) {
+    testImplementation appTestDependencies.archTesting
+    testImplementation appTestDependencies.mockito
+    testImplementation appTestDependencies.truth
+    androidTestImplementation(appTestDependencies.espressoCore, withoutCompatAndAnnotations)
+    androidTestImplementation(appTestDependencies.androidRunner, withoutCompatAndAnnotations)
+    androidTestImplementation(appTestDependencies.androidRules, withoutCompatAndAnnotations)
+    androidTestImplementation(appTestDependencies.espressoIntents, withoutCompatAndAnnotations)
+    androidTestImplementation(appTestDependencies.espressoContrib) {
         exclude module: 'support-compat'
         exclude module: 'appcompat'
         exclude module: 'appcompat-v7'
@@ -86,5 +79,8 @@ dependencies {
         exclude module: 'support-annotations'
         exclude module: 'recyclerview-v7'
         exclude module: 'design'
-    }*/
+        exclude module: 'support-core-utils'
+        exclude module: 'support-fragment'
+
+    }
 }

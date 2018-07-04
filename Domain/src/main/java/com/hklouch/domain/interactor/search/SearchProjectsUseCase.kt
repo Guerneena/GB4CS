@@ -7,7 +7,7 @@ import com.hklouch.domain.repository.ProjectsRepository
 import io.reactivex.Observable
 import javax.inject.Inject
 
-class SearchProjectsUseCase @Inject constructor(private val projectsRepository: ProjectsRepository) : ObservableUseCase<ProjectList, Params>() {
+open class SearchProjectsUseCase @Inject constructor(private val projectsRepository: ProjectsRepository) : ObservableUseCase<ProjectList, Params>() {
 
     override fun buildUseCaseObservable(params: Params?): Observable<ProjectList> {
         if (params == null) throw IllegalArgumentException("Params can not be null")

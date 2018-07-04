@@ -17,8 +17,8 @@ import javax.inject.Inject
 
 class BrowseProjectsActivity : AppCompatActivity(), ReposListFragment.Delegate {
 
-    @Inject lateinit var viewModelFactory: RepoListViewModelFactory
-    private lateinit var viewModel: RepoListViewModel
+    @Inject lateinit var viewModelFactory: ReposListViewModelFactory
+    private lateinit var viewModel: ReposListViewModel
 
     /* ***************** */
     /*     Life cycle    */
@@ -62,15 +62,15 @@ class BrowseProjectsActivity : AppCompatActivity(), ReposListFragment.Delegate {
     /* ***************** */
 
     override fun onNextPageRequested(next: Int) {
-        viewModel.fetchPublicRepos(next)
+        viewModel.fetchRepos(next)
     }
 
     override fun onRetryRequested(next: Int) {
         onNextPageRequested(next)
     }
 
-    override fun onObservePublicRepos(observer: Observer<State<UiPagingModel>>) {
-        viewModel.getPublicRepos().observe(this, observer)
+    override fun onObserveProjects(observer: Observer<State<UiPagingModel>>) {
+        viewModel.getResultRepos().observe(this, observer)
     }
 
     override fun onLoadSuccess() {

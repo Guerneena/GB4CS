@@ -16,18 +16,17 @@ import javax.inject.Singleton
 
 @Singleton
 class ProjectViewModelFactory @Inject constructor(private val getProjectDetailUseCase: GetProjectDetailUseCase) {
-    fun supply(ownerName: String, projectName: String) = ProjectViewModel(getProjectDetailUseCase, ownerName, projectName)
+    fun supply(ownerName: String, projectName: String) = ProjectDetailViewModel(getProjectDetailUseCase, ownerName, projectName)
 }
 
-class ProjectViewModel(private val getProjectDetailUseCase: GetProjectDetailUseCase,
-                       ownerName: String,
-                       projectName: String) : ViewModel() {
-
+class ProjectDetailViewModel(private val getProjectDetailUseCase: GetProjectDetailUseCase,
+                             ownerName: String,
+                             projectName: String) : ViewModel() {
 
     private val liveData: MutableLiveData<State<UiProjectItem>> = MutableLiveData()
 
     init {
-        getProjectDetail(ownerName, projectName)
+        fetchProjectDetail(ownerName, projectName)
     }
 
     override fun onCleared() {
@@ -37,7 +36,7 @@ class ProjectViewModel(private val getProjectDetailUseCase: GetProjectDetailUseC
 
     fun getResultProjectDetail() = liveData
 
-    fun getProjectDetail(ownerName: String, projectName: String) {
+    fun fetchProjectDetail(ownerName: String, projectName: String) {
         liveData.postValue(loading())
         getProjectDetailUseCase.execute(ProjectDetailSubscriber(), Params(ownerName, projectName))
     }

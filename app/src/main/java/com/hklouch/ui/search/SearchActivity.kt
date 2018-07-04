@@ -80,7 +80,7 @@ class SearchActivity : AppCompatActivity(), ReposListFragment.Delegate {
         viewModel.retry()
     }
 
-    override fun onObservePublicRepos(observer: Observer<State<UiPagingModel>>) {
+    override fun onObserveProjects(observer: Observer<State<UiPagingModel>>) {
         viewModel.getResultRepos().observe(this, observer)
     }
 

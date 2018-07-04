@@ -9,11 +9,11 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.hklouch.githubrepos4cs.R
-import com.hklouch.ui.browse.BrowseAdapter.ViewHolder
+import com.hklouch.ui.browse.BrowseProjectsAdapter.ViewHolder
 import com.hklouch.ui.model.UiProjectPreviewItem
 import javax.inject.Inject
 
-class BrowseAdapter @Inject constructor() : RecyclerView.Adapter<ViewHolder>() {
+class BrowseProjectsAdapter @Inject constructor() : RecyclerView.Adapter<ViewHolder>() {
 
     var models: List<UiProjectPreviewItem> = listOf()
     var projectItemListener: ProjectListener? = null

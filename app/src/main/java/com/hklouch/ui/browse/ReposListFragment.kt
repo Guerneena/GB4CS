@@ -19,7 +19,9 @@ import com.hklouch.ui.State.Success
 import com.hklouch.ui.browse.PagingRecyclerAdapter.RefreshCallbacks
 import com.hklouch.ui.detail.ProjectDetailActivity
 import com.hklouch.ui.model.UiPagingModel
+import com.hklouch.utils.hide
 import com.hklouch.utils.rootView
+import com.hklouch.utils.show
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.repo_list_fragment.*
 import timber.log.Timber
@@ -29,13 +31,13 @@ import kotlin.LazyThreadSafetyMode.NONE
 
 class ReposListFragment : Fragment() {
 
-    @Inject lateinit var browseAdapter: BrowseAdapter
+    @Inject lateinit var browseProjectsAdapter: BrowseProjectsAdapter
 
     private var delegate: Delegate? = null
 
     private val pagingAdapter by lazy(NONE) {
         PagingRecyclerAdapter(adapter =
-                              browseAdapter.apply {
+                              browseProjectsAdapter.apply {
                                   projectItemListener = this@ReposListFragment.projectListener
                                   setHasStableIds(true)
                               },
@@ -59,8 +61,8 @@ class ReposListFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setupPublicReposRecycler()
-        delegate?.onObservePublicRepos(Observer {
+        setupProjectsRecycler()
+        delegate?.onObserveProjects(Observer {
             it?.let { handleState(it) }
         })
     }
@@ -78,10 +80,10 @@ class ReposListFragment : Fragment() {
         when (resource) {
             is Success -> displaySuccess(resource.data)
             is Loading -> {
-                if (!browseAdapter.containsElements()) progress.visibility = View.VISIBLE
+                if (!browseProjectsAdapter.containsElements()) progress.show()
             }
             is Error -> {
-                progress.visibility = View.GONE
+                progress.hide()
 
                 pagingAdapter.onError(getString(R.string.repo_list_error))
 
@@ -93,7 +95,7 @@ class ReposListFragment : Fragment() {
         }
     }
 
-    private fun setupPublicReposRecycler() {
+    private fun setupProjectsRecycler() {
         repo_list.apply {
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
@@ -102,19 +104,19 @@ class ReposListFragment : Fragment() {
 
     private fun displaySuccess(projects: UiPagingModel) {
 
-        progress.visibility = View.GONE
+        progress.hide()
         projects.let {
             pagingAdapter.nextPosition = it.nextPage ?: 0
-            browseAdapter.updateProjects(it.projects)
-            browseAdapter.notifyDataSetChanged()
-            repo_list.visibility = View.VISIBLE
+            browseProjectsAdapter.updateProjects(it.projects)
+            browseProjectsAdapter.notifyDataSetChanged()
+            repo_list.show()
         }
 
         delegate?.onLoadSuccess()
     }
 
     fun clearData() {
-        browseAdapter.clearData()
+        browseProjectsAdapter.clearData()
         pagingAdapter.nextPosition = 0
     }
 
@@ -133,7 +135,6 @@ class ReposListFragment : Fragment() {
         override fun onRetry(nextPosition: Int) {
             onLoadNext(nextPosition)
         }
-
     }
 
     /* ***************** */
@@ -144,7 +145,7 @@ class ReposListFragment : Fragment() {
 
         fun onNextPageRequested(next: Int)
         fun onRetryRequested(next: Int)
-        fun onObservePublicRepos(observer: Observer<State<UiPagingModel>>)
+        fun onObserveProjects(observer: Observer<State<UiPagingModel>>)
         fun onLoadSuccess()
     }
 

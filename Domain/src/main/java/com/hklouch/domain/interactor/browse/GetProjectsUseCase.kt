@@ -7,7 +7,7 @@ import com.hklouch.domain.repository.ProjectsRepository
 import io.reactivex.Observable
 import javax.inject.Inject
 
-class GetProjectsUseCase @Inject constructor(private val projectsRepository: ProjectsRepository) : ObservableUseCase<ProjectList, Params?>() {
+open class GetProjectsUseCase @Inject constructor(private val projectsRepository: ProjectsRepository) : ObservableUseCase<ProjectList, Params?>() {
 
     override fun buildUseCaseObservable(params: Params?): Observable<ProjectList> {
         return projectsRepository.getProjects(params?.next)
