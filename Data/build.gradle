@@ -2,6 +2,7 @@ apply plugin: 'kotlin'
 
 dependencies {
     def dataDependencies = rootProject.ext.dataDependencies
+    def dataTestDependencies = rootProject.ext.dataTestDependencies
 
     implementation project(':Domain')
 
@@ -15,4 +16,8 @@ dependencies {
     implementation dataDependencies.gson
     implementation dataDependencies.okHttp
     implementation dataDependencies.okHttpLogger
+
+    testImplementation dataTestDependencies.jUnit
+    testImplementation dataTestDependencies.mockito
+    testImplementation dataTestDependencies.truth
 }

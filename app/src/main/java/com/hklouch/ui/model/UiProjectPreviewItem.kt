@@ -8,7 +8,7 @@ data class UiProjectPreviewItem(val project: Project,
                                 val url: String,
                                 val name: String,
                                 val fullName: String,
-                                val ownerId: String,
+                                val ownerId: Int,
                                 val ownerName: String,
                                 val ownerAvatarUrl: String,
                                 val description: String?

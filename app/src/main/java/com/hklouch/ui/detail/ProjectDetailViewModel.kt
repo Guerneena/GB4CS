@@ -10,8 +10,7 @@ import com.hklouch.ui.loading
 import com.hklouch.ui.model.UiProjectItem
 import com.hklouch.ui.model.toUiProjectItem
 import com.hklouch.ui.toState
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.observers.DisposableObserver
+import io.reactivex.observers.DisposableSingleObserver
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -21,8 +20,8 @@ class ProjectViewModelFactory @Inject constructor(private val getProjectDetailUs
 }
 
 class ProjectViewModel(private val getProjectDetailUseCase: GetProjectDetailUseCase,
-                       private val ownerName: String,
-                       private val projectName: String) : ViewModel() {
+                       ownerName: String,
+                       projectName: String) : ViewModel() {
 
 
     private val liveData: MutableLiveData<State<UiProjectItem>> = MutableLiveData()
@@ -43,12 +42,11 @@ class ProjectViewModel(private val getProjectDetailUseCase: GetProjectDetailUseC
         getProjectDetailUseCase.execute(ProjectDetailSubscriber(), Params(ownerName, projectName))
     }
 
-    inner class ProjectDetailSubscriber : DisposableObserver<Project>() {
-        override fun onNext(result: Project) {
+    inner class ProjectDetailSubscriber : DisposableSingleObserver<Project>() {
+
+        override fun onSuccess(result: Project) {
             liveData.postValue(result.toUiProjectItem().toState())
         }
-
-        override fun onComplete() {}
 
         override fun onError(e: Throwable) {
             liveData.postValue(e.toState())

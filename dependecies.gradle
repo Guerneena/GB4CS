@@ -83,6 +83,13 @@ ext {
             gson                 : "com.google.code.gson:gson:${gson_version}"
     ]
 
+
+    dataTestDependencies = [
+            jUnit  : "junit:junit:${junit_version}",
+            mockito: "org.mockito:mockito-core:${mockito_version}",
+            truth  : "com.google.truth:truth:${truth_version}"
+    ]
+
     appDependencies = [
             rxKotlin           : "io.reactivex.rxjava2:rxkotlin:${rxkotlin_version}",
             rxAndroid          : "io.reactivex.rxjava2:rxandroid:${rxandroid_version}",
@@ -106,6 +113,7 @@ ext {
             archExtensions     : "android.arch.lifecycle:extensions:${android_arch_version}",
             archCompiler       : "android.arch.lifecycle:compiler:${android_arch_version}"
     ]
+
     appTestDependencies = [
             jUnit          : "junit:junit:${junit_version}",
             androidRunner  : "com.android.support.test:runner:${runner_version}",

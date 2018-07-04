@@ -1,11 +1,12 @@
 package com.hklouch.data.network
 
-import com.hklouch.data.model.toProject
-import com.hklouch.data.model.toProjectList
+import com.hklouch.data.mapper.toProject
+import com.hklouch.data.mapper.toProjectList
 import com.hklouch.domain.model.Project
 import com.hklouch.domain.model.ProjectList
 import com.hklouch.domain.repository.ProjectsRepository
 import io.reactivex.Observable
+import io.reactivex.Single
 import javax.inject.Inject
 
 
@@ -41,7 +42,7 @@ class NetworkProjectsRepository @Inject constructor(private val githubReposServi
         }
     }
 
-    override fun getProject(ownerName: String, projectName: String): Observable<Project> {
+    override fun getProject(ownerName: String, projectName: String): Single<Project> {
         return githubReposService.getProject(ownerName, projectName).map { it.toProject() }
     }
 

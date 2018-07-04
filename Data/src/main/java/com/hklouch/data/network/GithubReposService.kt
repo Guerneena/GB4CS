@@ -3,6 +3,7 @@ package com.hklouch.data.network
 import com.hklouch.data.model.ProjectJson
 import com.hklouch.data.model.ProjectSearchResponse
 import io.reactivex.Observable
+import io.reactivex.Single
 import retrofit2.adapter.rxjava2.Result
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -21,7 +22,7 @@ interface GithubReposService {
 
     @GET("repos/{owner}/{project}")
     fun getProject(@Path("owner") ownerName: String,
-                   @Path("project") projectName: String): Observable<ProjectJson>
+                   @Path("project") projectName: String): Single<ProjectJson>
 
 
 }
