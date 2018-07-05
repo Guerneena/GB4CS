@@ -4,8 +4,10 @@ import com.hklouch.data.network.branch.toBranchList
 import com.hklouch.data.network.issue.toIssues
 import com.hklouch.data.network.project.toProject
 import com.hklouch.data.network.project.toProjectList
+import com.hklouch.data.network.pull.toParam
 import com.hklouch.data.network.pull.toPulls
 import com.hklouch.data.network.user.toUsers
+import com.hklouch.domain.interactor.pull.PullsUseCase.Params.State
 import com.hklouch.domain.model.Branch
 import com.hklouch.domain.model.Issue
 import com.hklouch.domain.model.PagingWrapper
@@ -80,10 +82,11 @@ class NetworkProjectsRepository @Inject constructor(private val githubReposServi
         }
     }
 
-    override fun getPulls(ownerName: String, projectName: String, state: String?, page: Int?, resultsPerPage: Int?): Observable<PagingWrapper<Pull>> {
+    override fun getPulls(ownerName: String, projectName: String, state: State, page: Int?, resultsPerPage: Int?): Observable<PagingWrapper<Pull>> {
+
         return githubReposService.getPulls(ownerName,
                                            projectName,
-                                           state,
+                                           state.toParam(),
                                            page,
                                            resultsPerPage ?: DEFAULT_RESULTS_PER_PAGE).map { result ->
             result.toPagingWrapper(pagingParameter = DEFAULT_PAGING_PARAM,

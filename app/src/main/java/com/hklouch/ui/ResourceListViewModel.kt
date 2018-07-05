@@ -7,21 +7,25 @@ import com.hklouch.domain.model.PagingWrapper
 import com.hklouch.ui.browse.ResourceObserver
 import com.hklouch.ui.model.UiPagingWrapper
 import kotlin.reflect.KFunction1
+import kotlin.reflect.KProperty1
 
-class ResourceListViewModelFactory<T, R, H : ObservableUseCase<PagingWrapper<T>, Params?>, Params>
+class ResourceListViewModelFactory<T, R, H : ObservableUseCase<PagingWrapper<T>, Params>, Params>
 constructor(private val useCase: H,
             private val mapper: KFunction1<T, R>) {
 
-    fun supply() = ResourceListViewModel(useCase, mapper)
+    fun supply(params: Params? = null) = ResourceListViewModel(useCase, mapper, params)
 }
 
-class ResourceListViewModel<T, R, in Params>(private val useCase: ObservableUseCase<PagingWrapper<T>, Params?>,
-                                             private val mapper: KFunction1<T, R>) : ViewModel() {
+class ResourceListViewModel<T, R, Params>(private val useCase: ObservableUseCase<PagingWrapper<T>, Params>,
+                                          private val mapper: KFunction1<T, R>,
+                                          params: Params?) : ViewModel() {
 
     private val liveData: MutableLiveData<State<UiPagingWrapper<R>>> = MutableLiveData()
 
+    private var lastParams: Params? = null
+
     init {
-        fetchResource()
+        fetchResource(params)
     }
 
     override fun onCleared() {
@@ -31,9 +35,11 @@ class ResourceListViewModel<T, R, in Params>(private val useCase: ObservableUseC
 
     fun getResourceResult() = liveData
 
-
     fun fetchResource(params: Params? = null) {
         liveData.postValue(loading())
+        lastParams = params
         useCase.execute(ResourceObserver(liveDataObserver = liveData, mapper = mapper), params)
     }
+
+    fun lastQuery(): Params? = lastParams
 }

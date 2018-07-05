@@ -9,10 +9,12 @@ import com.hklouch.domain.interactor.browse.GetProjectsUseCase
 import com.hklouch.domain.interactor.browse.GetProjectsUseCase.Params
 import com.hklouch.domain.model.Project
 import com.hklouch.githubrepos4cs.R
+import com.hklouch.ui.ResourceBaseActivity
 import com.hklouch.ui.ResourceListBaseFragment
 import com.hklouch.ui.ResourceListViewModel
 import com.hklouch.ui.ResourceListViewModelFactory
 import com.hklouch.ui.State
+import com.hklouch.ui.branch.BranchActivity
 import com.hklouch.ui.model.UiPagingWrapper
 import com.hklouch.ui.model.UiProjectPreviewItem
 import com.hklouch.ui.search.SearchActivity

@@ -1,19 +1,28 @@
 <resources>
-    <string name="app_name">GitHubRepos4Cs</string>
-    <string name="avatar">User avatar</string>
+    <string name="app_name">GithubRepos</string>
+    <string name="branches_activity_title">Branches</string>
+    <string name="browser_activity_title">Browse repositories</string>
+    <string name="contributors_activity_title">Contributors</string>
+
+    <string name="issues_activity_title">Issues</string>
+
+    <string name="project_detail_activity_title">Details</string>
+    <string name="project_detail_forks">Forks</string>
+    <string name="project_detail_not_fork">Not a fork</string>
+    <string name="project_detail_is_fork">Is a fork</string>
+    <string name="project_detail_issues">Issues</string>
+    <string name="project_detail_stars">Stars</string>
+    <string name="project_detail_watchers">Watchers</string>
+
+    <string name="pulls_activity_title">Pulls</string>
+
     <string name="repo_list_error">A error occurred</string>
     <string name="repo_list_menu_search">Search a repository</string>
-    <string name="search_activity_title">Search repository</string>
-    <string name="browser_activity_title">Browse repositories</string>
-    <string name="search_query_hint">Search a repository</string>
+
     <string name="retry">Retry</string>
-    <string name="title_activity_project_detail">Details</string>
 
+    <string name="search_activity_title">Search repository</string>
+    <string name="search_query_hint">Search a repository</string>
 
-    <string name="project_detail_stars">Stars</string>
-    <string name="project_detail_forks">Forks</string>
-    <string name="project_detail_watchers">Watchers</string>
-    <string name="project_detail_issues">Issues</string>
-    <string name="project_detail_is_fork">Is a fork</string>
-    <string name="project_detail_not_fork">Not a fork</string>
+    <string name="avatar">User avatar</string>
 </resources>

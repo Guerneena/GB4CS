@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/repo_item_height"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+    <ImageView
+        android:id="@+id/issue_owner_image"
+        android:layout_width="@dimen/value_64dp"
+        android:layout_height="@dimen/value_64dp"
+        android:layout_marginBottom="@dimen/value_8dp"
+        android:layout_marginStart="@dimen/value_16dp"
+        android:layout_marginTop="@dimen/value_8dp"
+        android:contentDescription="@string/avatar"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/issue_owner_name_text"
+        style="@style/AppTheme.TextAppearance.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/value_8dp"
+        android:layout_marginStart="@dimen/value_16dp"
+        app:layout_constraintBottom_toTopOf="@id/issue_title_text"
+        app:layout_constraintStart_toEndOf="@id/issue_owner_image"
+        app:layout_constraintTop_toTopOf="@id/issue_owner_image"
+        tools:text="Name"/>
+
+    <TextView
+        android:id="@+id/issue_title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/value_16dp"
+        android:maxLines="5"
+        app:layout_constraintBottom_toBottomOf="@id/issue_owner_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/issue_owner_image"
+        app:layout_constraintTop_toBottomOf="@id/issue_owner_name_text"
+        tools:text="Issue title"/>
+
+</android.support.constraint.ConstraintLayout>

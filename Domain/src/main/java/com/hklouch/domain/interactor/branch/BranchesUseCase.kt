@@ -9,7 +9,7 @@ import io.reactivex.Observable
 import javax.inject.Inject
 
 open class BranchesUseCase @Inject constructor(private val projectsRepository: ProjectsRepository) :
-        ObservableUseCase<PagingWrapper<Branch>, Params>() {
+        ObservableUseCase<PagingWrapper<Branch>, Params?>() {
 
     override fun buildUseCaseObservable(params: Params?): Observable<PagingWrapper<Branch>> {
         if (params == null) throw IllegalArgumentException("Params can not be null")

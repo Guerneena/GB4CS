@@ -12,25 +12,35 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name="com.hklouch.ui.browse.BrowseProjectsActivity"
-                  android:label="@string/browser_activity_title"
-                  android:theme="@style/AppTheme.NoActionBar">
+                  android:label="@string/browser_activity_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.hklouch.ui.search.SearchActivity"
-            android:label="@string/search_activity_title"
-            android:theme="@style/AppTheme.NoActionBar">
+
+        <activity android:name="com.hklouch.ui.search.SearchActivity"
+                  android:label="@string/search_activity_title">
         </activity>
-        <activity
-            android:name="com.hklouch.ui.detail.ProjectDetailActivity"
-            android:label="@string/title_activity_project_detail"
-            android:theme="@style/AppTheme.NoActionBar">
+
+        <activity android:name="com.hklouch.ui.detail.ProjectDetailActivity"
+                  android:label="@string/project_detail_activity_title">
         </activity>
+
+        <activity android:name="com.hklouch.ui.branch.BranchActivity"
+                  android:label="@string/branches_activity_title"/>
+
+        <activity android:name="com.hklouch.ui.contributor.ContributorActivity"
+                  android:label="@string/contributors_activity_title"/>
+
+        <activity android:name="com.hklouch.ui.issue.IssueActivity"
+                  android:label="@string/issues_activity_title"/>
+
+        <activity android:name="com.hklouch.ui.pull.PullActivity"
+                  android:label="@string/pulls_activity_title"/>
     </application>
 
 </manifest>

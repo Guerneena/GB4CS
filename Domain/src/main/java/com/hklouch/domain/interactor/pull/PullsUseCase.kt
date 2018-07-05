@@ -2,6 +2,7 @@ package com.hklouch.domain.interactor.pull
 
 import com.hklouch.domain.interactor.ObservableUseCase
 import com.hklouch.domain.interactor.pull.PullsUseCase.Params
+import com.hklouch.domain.interactor.pull.PullsUseCase.Params.State.OPEN
 import com.hklouch.domain.model.PagingWrapper
 import com.hklouch.domain.model.Pull
 import com.hklouch.domain.repository.ProjectsRepository
@@ -21,7 +22,10 @@ open class PullsUseCase @Inject constructor(private val projectsRepository: Proj
 
     data class Params(val ownerName: String,
                       val projectName: String,
-                      val state: String? = null,
+                      val state: State = OPEN,
                       val page: Int? = null,
-                      val resultsPerPage: Int? = null)
+                      val resultsPerPage: Int? = null) {
+
+        enum class State { OPEN, CLOSED, ALL }
+    }
 }

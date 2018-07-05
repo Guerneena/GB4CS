@@ -1,5 +1,6 @@
 package com.hklouch.domain.repository
 
+import com.hklouch.domain.interactor.pull.PullsUseCase.Params.State
 import com.hklouch.domain.model.Branch
 import com.hklouch.domain.model.Issue
 import com.hklouch.domain.model.PagingWrapper
@@ -23,6 +24,6 @@ interface ProjectsRepository {
 
     fun getIssues(ownerName: String, projectName: String, page: Int?, resultsPerPage: Int?): Observable<PagingWrapper<Issue>>
 
-    fun getPulls(ownerName: String, projectName: String, state: String?, page: Int?, resultsPerPage: Int?): Observable<PagingWrapper<Pull>>
+    fun getPulls(ownerName: String, projectName: String, state: State, page: Int?, resultsPerPage: Int?): Observable<PagingWrapper<Pull>>
 
 }
