@@ -1,9 +1,6 @@
-package com.hklouch.data.mapper
+package com.hklouch.data.network.project
 
-import com.hklouch.data.model.ProjectJson
-import com.hklouch.data.model.ProjectSearchResponse
 import com.hklouch.domain.model.Project
-import com.hklouch.domain.model.ProjectList
 
 fun ProjectJson.toProject() = Project(id = id,
                                       url = url,
@@ -24,10 +21,6 @@ fun ProjectJson.toProject() = Project(id = id,
                                       branchesUrl = branchesUrl,
                                       pullsUrl = pullsUrl)
 
-fun ProjectSearchResponse.toProjectList(nextPage: Int?, lastPage: Int?) = ProjectList(nextPage = nextPage,
-                                                                                      lastPage = lastPage,
-                                                                                      projects = projects.map { it.toProject() })
+fun Collection<ProjectJson>.toProjectList() = map { it.toProject() }
 
-fun Collection<ProjectJson>.toProjectList(nextPage: Int?, lastPage: Int?) = ProjectList(nextPage = nextPage,
-                                                                                        lastPage = lastPage,
-                                                                                        projects = map { it.toProject() })
+fun ProjectSearchResponse.toProjectList() = projects.map { it.toProject() }

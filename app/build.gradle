@@ -49,6 +49,7 @@ dependencies {
     implementation appDependencies.glide
     implementation appDependencies.dagger
     implementation appDependencies.daggerSupport, withoutSupportFragment
+//    implementation appDependencies.retrofitRxJavaAdapter
 
     implementation appDependencies.archRuntime
     implementation appDependencies.archExtensions

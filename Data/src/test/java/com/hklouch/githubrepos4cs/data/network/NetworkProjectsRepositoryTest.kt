@@ -1,7 +1,7 @@
 package com.hklouch.githubrepos4cs.data.network
 
-import com.hklouch.data.model.ProjectJson
-import com.hklouch.data.model.ProjectSearchResponse
+import com.hklouch.data.network.project.ProjectJson
+import com.hklouch.data.network.project.ProjectSearchResponse
 import com.hklouch.data.network.GithubReposService
 import com.hklouch.data.network.NetworkProjectsRepository
 import com.hklouch.domain.model.ProjectList

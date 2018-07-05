@@ -1,8 +1,8 @@
 package com.hklouch.githubrepos4cs.data.mapper
 
 import com.google.common.truth.Truth
-import com.hklouch.data.mapper.toProject
-import com.hklouch.data.mapper.toProjectList
+import com.hklouch.data.network.project.toProject
+import com.hklouch.data.network.project.toProjectList
 import org.junit.Before
 import org.junit.Test
 

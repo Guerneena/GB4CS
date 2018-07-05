@@ -1,6 +1,7 @@
 package com.hklouch.ui.detail
 
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -26,7 +27,7 @@ class ProjectDetailViewManager(private val view: View) {
     private val isAForkView: TextView = view.findViewById(R.id.project_detail_is_fork)
 
     private val progressBar: ProgressBar = view.findViewById(R.id.progress)
-    private val contentView: ProgressBar = view.findViewById(R.id.content_project_detail)
+    private val contentView: ViewGroup = view.findViewById(R.id.content_project_detail)
 
     var isLoading: Boolean = false
         set(value) {

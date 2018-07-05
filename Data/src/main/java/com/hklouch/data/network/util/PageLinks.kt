@@ -1,4 +1,4 @@
-package com.hklouch.data.network
+package com.hklouch.data.network.util
 
 import okhttp3.Headers
 import okhttp3.HttpUrl
