@@ -1,4 +1,4 @@
-package com.hklouch.ui.browse
+package com.hklouch.ui
 
 import android.app.Fragment
 import android.arch.lifecycle.Observer
@@ -7,62 +7,62 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.hklouch.domain.model.Project
 import com.hklouch.githubrepos4cs.R
-import com.hklouch.ui.State
+import com.hklouch.ui.ResourceBaseAdapter.ItemListener
+import com.hklouch.ui.ResourcePagingAdapter.RefreshCallbacks
 import com.hklouch.ui.State.Error
 import com.hklouch.ui.State.Loading
 import com.hklouch.ui.State.Success
-import com.hklouch.ui.browse.PagingRecyclerAdapter.RefreshCallbacks
-import com.hklouch.ui.detail.ProjectDetailActivity
-import com.hklouch.ui.model.UiPagingModel
+import com.hklouch.ui.model.UiPagingWrapper
 import com.hklouch.utils.hide
 import com.hklouch.utils.rootView
 import com.hklouch.utils.show
-import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.repo_list_fragment.*
+import kotlinx.android.synthetic.main.resource_list_fragment.*
 import timber.log.Timber
-import javax.inject.Inject
 import kotlin.LazyThreadSafetyMode.NONE
 
 
-class ReposListFragment : Fragment() {
+abstract class ResourceListBaseFragment<T, U : ViewHolder> : Fragment() {
 
-    @Inject lateinit var browseProjectsAdapter: BrowseProjectsAdapter
+    abstract var adapter: ResourceBaseAdapter<T, U>
 
-    private var delegate: Delegate? = null
+    abstract val itemListener: ItemListener<T>
+
+    abstract val refreshCallbacks: RefreshCallbacks
+
+    protected var delegate: Delegate<T>? = null
 
     private val pagingAdapter by lazy(NONE) {
-        PagingRecyclerAdapter(adapter =
-                              browseProjectsAdapter.apply {
-                                  projectItemListener = this@ReposListFragment.projectListener
+        ResourcePagingAdapter(adapter =
+                              adapter.apply {
                                   setHasStableIds(true)
+                                  itemListener = this@ResourceListBaseFragment.itemListener
                               },
-                              refreshCallbacks = refreshCallbacks).apply { repo_list.adapter = this }
+                              refreshCallbacks = refreshCallbacks).apply { resource_list_recycler.adapter = this }
     }
-
     /* ***************** */
     /*     Life cycle    */
     /* ***************** */
 
+    @Suppress("UNCHECKED_CAST")
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        AndroidInjection.inject(this)
-        delegate = activity as Delegate
+        delegate = activity as? Delegate<T>
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.repo_list_fragment, container, false)
+        return inflater.inflate(R.layout.resource_list_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setupProjectsRecycler()
-        delegate?.onObserveProjects(Observer {
+        delegate?.onRequestDataSubscription(Observer {
             it?.let { handleState(it) }
         })
     }
@@ -76,14 +76,14 @@ class ReposListFragment : Fragment() {
     /*       Private     */
     /* ***************** */
 
-    private fun handleState(resource: State<UiPagingModel>) {
+    private fun handleState(resource: State<UiPagingWrapper<T>>) {
         when (resource) {
             is Success -> displaySuccess(resource.data)
             is Loading -> {
-                if (!browseProjectsAdapter.containsElements()) progress.show()
+                if (!adapter.containsElements()) resource_list_progress.show()
             }
             is Error -> {
-                progress.hide()
+                resource_list_progress.hide()
 
                 pagingAdapter.onError(getString(R.string.repo_list_error))
 
@@ -96,58 +96,42 @@ class ReposListFragment : Fragment() {
     }
 
     private fun setupProjectsRecycler() {
-        repo_list.apply {
+        resource_list_recycler.apply {
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
     }
 
-    private fun displaySuccess(projects: UiPagingModel) {
+    @Suppress("UNCHECKED_CAST")
+    private fun displaySuccess(items: UiPagingWrapper<T>) {
 
-        progress.hide()
-        projects.let {
+        resource_list_progress.hide()
+        items.let {
             pagingAdapter.nextPosition = it.nextPage ?: 0
-            browseProjectsAdapter.updateProjects(it.projects)
-            browseProjectsAdapter.notifyDataSetChanged()
-            repo_list.show()
+            adapter.bindItems(it.items)
+            adapter.notifyDataSetChanged()
+            resource_list_recycler.show()
         }
 
         delegate?.onLoadSuccess()
     }
 
     fun clearData() {
-        browseProjectsAdapter.clearData()
+        adapter.clearData()
         pagingAdapter.nextPosition = 0
     }
 
-    private val projectListener = object : ProjectListener {
-
-        override fun onProjectClicked(project: Project) {
-            startActivity(ProjectDetailActivity.createIntent(activity, ownerName = project.ownerName, projectName = project.name))
-        }
-    }
-
-    private val refreshCallbacks = object : RefreshCallbacks {
-        override fun onLoadNext(nextPosition: Int) {
-            delegate?.onNextPageRequested(nextPosition)
-        }
-
-        override fun onRetry(nextPosition: Int) {
-            onLoadNext(nextPosition)
-        }
-    }
 
     /* ***************** */
     /*      Delegate     */
     /* ***************** */
 
-    interface Delegate {
+    interface Delegate<T> {
 
         fun onNextPageRequested(next: Int)
         fun onRetryRequested(next: Int)
-        fun onObserveProjects(observer: Observer<State<UiPagingModel>>)
+        fun onRequestDataSubscription(observer: Observer<State<UiPagingWrapper<T>>>)
         fun onLoadSuccess()
     }
-
 
 }

@@ -30,9 +30,8 @@ class NetworkProjectsRepository @Inject constructor(private val githubReposServi
         return githubReposService.search(query = query, page = page, resultsPerPage = resultsPerPage
                 ?: DEFAULT_RESULTS_PER_PAGE).map { result ->
 
-            getPagingWrapper(result = result,
-                             pagingParameter = DEFAULT_PAGING_PARAM,
-                             mapper = { result.response()?.body()?.toProjectList() })
+            result.toPagingWrapper(pagingParameter = DEFAULT_PAGING_PARAM,
+                                   mapper = { result.response()?.body()?.toProjectList() })
         }
     }
 
@@ -40,9 +39,8 @@ class NetworkProjectsRepository @Inject constructor(private val githubReposServi
     override fun getProjects(next: Int?): Observable<PagingWrapper<Project>> {
         return githubReposService.getProjects(next).map { result ->
 
-            getPagingWrapper(result = result,
-                             pagingParameter = BROWSE_PAGING_PARAM,
-                             mapper = { result.response()?.body()?.toProjectList() })
+            result.toPagingWrapper(pagingParameter = BROWSE_PAGING_PARAM,
+                                   mapper = { result.response()?.body()?.toProjectList() })
         }
     }
 
@@ -54,9 +52,8 @@ class NetworkProjectsRepository @Inject constructor(private val githubReposServi
         return githubReposService.getBranches(ownerName,
                                               projectName, page,
                                               resultsPerPage ?: DEFAULT_RESULTS_PER_PAGE).map { result ->
-            getPagingWrapper(result = result,
-                             pagingParameter = DEFAULT_PAGING_PARAM,
-                             mapper = { result.response()?.body()?.toBranchList() })
+            result.toPagingWrapper(pagingParameter = DEFAULT_PAGING_PARAM,
+                                   mapper = { result.response()?.body()?.toBranchList() })
 
         }
     }
@@ -66,9 +63,8 @@ class NetworkProjectsRepository @Inject constructor(private val githubReposServi
                                                   projectName,
                                                   page,
                                                   resultsPerPage ?: DEFAULT_RESULTS_PER_PAGE).map { result ->
-            getPagingWrapper(result = result,
-                             pagingParameter = DEFAULT_PAGING_PARAM,
-                             mapper = { result.response()?.body()?.toUsers() })
+            result.toPagingWrapper(pagingParameter = DEFAULT_PAGING_PARAM,
+                                   mapper = { result.response()?.body()?.toUsers() })
 
         }
     }
@@ -78,9 +74,8 @@ class NetworkProjectsRepository @Inject constructor(private val githubReposServi
                                             projectName,
                                             page,
                                             resultsPerPage ?: DEFAULT_RESULTS_PER_PAGE).map { result ->
-            getPagingWrapper(result = result,
-                             pagingParameter = DEFAULT_PAGING_PARAM,
-                             mapper = { result.response()?.body()?.toIssues() })
+            result.toPagingWrapper(pagingParameter = DEFAULT_PAGING_PARAM,
+                                   mapper = { result.response()?.body()?.toIssues() })
 
         }
     }
@@ -91,12 +86,9 @@ class NetworkProjectsRepository @Inject constructor(private val githubReposServi
                                            state,
                                            page,
                                            resultsPerPage ?: DEFAULT_RESULTS_PER_PAGE).map { result ->
-            getPagingWrapper(result = result,
-                             pagingParameter = DEFAULT_PAGING_PARAM,
-                             mapper = { result.response()?.body()?.toPulls() })
+            result.toPagingWrapper(pagingParameter = DEFAULT_PAGING_PARAM,
+                                   mapper = { result.response()?.body()?.toPulls() })
 
         }
     }
-
-
 }

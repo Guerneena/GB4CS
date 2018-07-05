@@ -26,7 +26,7 @@ class ProjectDetailViewManager(private val view: View) {
     private val issuesCountView: TextView = view.findViewById(R.id.project_detail_issues)
     private val isAForkView: TextView = view.findViewById(R.id.project_detail_is_fork)
 
-    private val progressBar: ProgressBar = view.findViewById(R.id.progress)
+    private val progressBar: ProgressBar = view.findViewById(R.id.resource_list_progress)
     private val contentView: ViewGroup = view.findViewById(R.id.content_project_detail)
 
     var isLoading: Boolean = false

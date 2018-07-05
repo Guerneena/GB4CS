@@ -1,7 +1,7 @@
-package com.hklouch.domain.interactor.pulls
+package com.hklouch.domain.interactor.pull
 
 import com.hklouch.domain.interactor.ObservableUseCase
-import com.hklouch.domain.interactor.pulls.PullsUseCase.Params
+import com.hklouch.domain.interactor.pull.PullsUseCase.Params
 import com.hklouch.domain.model.PagingWrapper
 import com.hklouch.domain.model.Pull
 import com.hklouch.domain.repository.ProjectsRepository

@@ -7,7 +7,7 @@
     tools:context="com.hklouch.ui.browse.BrowseProjectsActivity">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/repo_list"
+        android:id="@+id/resource_list_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
@@ -16,7 +16,7 @@
         android:scrollbars="vertical"/>
 
     <ProgressBar
-        android:id="@+id/progress"
+        android:id="@+id/resource_list_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

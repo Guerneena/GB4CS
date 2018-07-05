@@ -9,14 +9,14 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.hklouch.githubrepos4cs.R
+import com.hklouch.ui.ResourceBaseAdapter
 import com.hklouch.ui.browse.BrowseProjectsAdapter.ViewHolder
 import com.hklouch.ui.model.UiProjectPreviewItem
 import javax.inject.Inject
 
-class BrowseProjectsAdapter @Inject constructor() : RecyclerView.Adapter<ViewHolder>() {
+class BrowseProjectsAdapter @Inject constructor() : ResourceBaseAdapter<UiProjectPreviewItem, ViewHolder>() {
 
-    var models: List<UiProjectPreviewItem> = listOf()
-    var projectItemListener: ProjectListener? = null
+    private var models: List<UiProjectPreviewItem> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater
@@ -39,26 +39,24 @@ class BrowseProjectsAdapter @Inject constructor() : RecyclerView.Adapter<ViewHol
                 .apply(RequestOptions.circleCropTransform())
                 .into(holder.ownerImage)
 
-
         holder.itemView.setOnClickListener {
-            projectItemListener?.onProjectClicked(item.project)
+            itemListener?.onItemClicked(item)
         }
     }
 
-    fun updateProjects(newProjects: List<UiProjectPreviewItem>) {
-        models += newProjects
+    override fun bindItems(items: List<UiProjectPreviewItem>) {
+        models += items
     }
 
-    fun clearData() {
+    override fun clearData() {
         models = listOf()
     }
 
-    fun containsElements() = itemCount > 0
+    override fun containsElements() = itemCount > 0
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var ownerImage: ImageView = view.findViewById(R.id.owner_image)
         var ownerNameText: TextView = view.findViewById(R.id.owner_name_text)
         var projectNameText: TextView = view.findViewById(R.id.project_name_text)
     }
-
 }

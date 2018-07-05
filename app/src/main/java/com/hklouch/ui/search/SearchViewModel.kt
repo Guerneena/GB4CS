@@ -3,10 +3,13 @@ package com.hklouch.ui.search
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.hklouch.domain.interactor.search.SearchProjectsUseCase
+import com.hklouch.domain.model.Project
 import com.hklouch.ui.State
-import com.hklouch.ui.browse.ProjectsObserver
+import com.hklouch.ui.browse.ResourceObserver
 import com.hklouch.ui.loading
-import com.hklouch.ui.model.UiPagingModel
+import com.hklouch.ui.model.UiPagingWrapper
+import com.hklouch.ui.model.UiProjectPreviewItem
+import com.hklouch.ui.model.toUiProjectPreviewItem
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.subjects.BehaviorSubject
@@ -20,14 +23,15 @@ class SearchViewModelFactory @Inject constructor(private val searchProjectsUseCa
 
 class SearchViewModel(private val searchProjectsUseCase: SearchProjectsUseCase) : ViewModel() {
 
-    private val liveData: MutableLiveData<State<UiPagingModel>> = MutableLiveData()
+    private val liveData: MutableLiveData<State<UiPagingWrapper<UiProjectPreviewItem>>> = MutableLiveData()
     private val querySubject = BehaviorSubject.create<SearchProjectsUseCase.Params>()
 
     private val disposable = CompositeDisposable()
 
     init {
         disposable += querySubject.subscribe {
-            searchProjectsUseCase.execute(ProjectsObserver(liveData), it)
+            searchProjectsUseCase.execute(ResourceObserver(liveDataObserver = liveData,
+                                                           mapper = Project::toUiProjectPreviewItem), it)
         }
     }
 

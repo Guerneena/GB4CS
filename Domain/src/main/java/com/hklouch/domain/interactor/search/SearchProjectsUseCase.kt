@@ -8,7 +8,8 @@ import com.hklouch.domain.repository.ProjectsRepository
 import io.reactivex.Observable
 import javax.inject.Inject
 
-open class SearchProjectsUseCase @Inject constructor(private val projectsRepository: ProjectsRepository) : ObservableUseCase<PagingWrapper<Project>, Params>() {
+open class SearchProjectsUseCase @Inject constructor(private val projectsRepository: ProjectsRepository)
+    : ObservableUseCase<PagingWrapper<Project>, Params?>() {
 
     override fun buildUseCaseObservable(params: Params?): Observable<PagingWrapper<Project>> {
         if (params == null) throw IllegalArgumentException("Params can not be null")

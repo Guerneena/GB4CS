@@ -5,9 +5,16 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.hklouch.domain.interactor.browse.GetProjectsUseCase
+import com.hklouch.domain.interactor.browse.GetProjectsUseCase.Params
+import com.hklouch.domain.model.Project
 import com.hklouch.githubrepos4cs.R
+import com.hklouch.ui.ResourceListBaseFragment
+import com.hklouch.ui.ResourceListViewModel
+import com.hklouch.ui.ResourceListViewModelFactory
 import com.hklouch.ui.State
-import com.hklouch.ui.model.UiPagingModel
+import com.hklouch.ui.model.UiPagingWrapper
+import com.hklouch.ui.model.UiProjectPreviewItem
 import com.hklouch.ui.search.SearchActivity
 import com.hklouch.utils.getViewModel
 import dagger.android.AndroidInjection
@@ -15,10 +22,15 @@ import kotlinx.android.synthetic.main.toolbar_layout.*
 import javax.inject.Inject
 
 
-class BrowseProjectsActivity : AppCompatActivity(), ReposListFragment.Delegate {
+class BrowseProjectsActivity : AppCompatActivity(), ResourceListBaseFragment.Delegate<UiProjectPreviewItem> {
 
-    @Inject lateinit var viewModelFactory: ReposListViewModelFactory
-    private lateinit var viewModel: ReposListViewModel
+    @Inject lateinit var viewModelFactory: ResourceListViewModelFactory<Project,
+            UiProjectPreviewItem,
+            GetProjectsUseCase,
+            GetProjectsUseCase.Params>
+    private lateinit var viewModel: ResourceListViewModel<Project,
+            UiProjectPreviewItem,
+            GetProjectsUseCase.Params>
 
     /* ***************** */
     /*     Life cycle    */
@@ -35,7 +47,7 @@ class BrowseProjectsActivity : AppCompatActivity(), ReposListFragment.Delegate {
 
         if (savedInstanceState == null) {
             fragmentManager.beginTransaction()
-                    .add(R.id.repo_list_container, ReposListFragment())
+                    .add(R.id.repo_list_container, BrowseFragment())
                     .commit()
         }
 
@@ -62,15 +74,15 @@ class BrowseProjectsActivity : AppCompatActivity(), ReposListFragment.Delegate {
     /* ***************** */
 
     override fun onNextPageRequested(next: Int) {
-        viewModel.fetchRepos(next)
+        viewModel.fetchResource(Params(next))
     }
 
     override fun onRetryRequested(next: Int) {
         onNextPageRequested(next)
     }
 
-    override fun onObserveProjects(observer: Observer<State<UiPagingModel>>) {
-        viewModel.getResultRepos().observe(this, observer)
+    override fun onRequestDataSubscription(observer: Observer<State<UiPagingWrapper<UiProjectPreviewItem>>>) {
+        viewModel.getResourceResult().observe(this, observer)
     }
 
     override fun onLoadSuccess() {

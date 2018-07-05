@@ -1,4 +1,4 @@
-package com.hklouch.ui.browse
+package com.hklouch.ui
 
 import android.support.annotation.LayoutRes
 import android.support.v7.widget.RecyclerView
@@ -11,15 +11,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import com.hklouch.githubrepos4cs.R
-import com.hklouch.ui.browse.PagingRecyclerAdapter.State.ERROR
-import com.hklouch.ui.browse.PagingRecyclerAdapter.State.FINISHED
-import com.hklouch.ui.browse.PagingRecyclerAdapter.State.IDLE
-import com.hklouch.ui.browse.PagingRecyclerAdapter.State.LOADING
+import com.hklouch.githubrepos4cs.R.layout
+import com.hklouch.ui.ResourcePagingAdapter.State.ERROR
+import com.hklouch.ui.ResourcePagingAdapter.State.FINISHED
+import com.hklouch.ui.ResourcePagingAdapter.State.IDLE
+import com.hklouch.ui.ResourcePagingAdapter.State.LOADING
 
 /**
  * Recycler adapter that adds paging capabilities.
  */
-class PagingRecyclerAdapter<T : RecyclerView.ViewHolder>(
+class ResourcePagingAdapter<T : RecyclerView.ViewHolder>(
         private val adapter: RecyclerView.Adapter<T>,
         private val refreshCallbacks: RefreshCallbacks,
         @LayoutRes private val loadingLayout: Int = R.layout.view_paging_adapter_default_loading
@@ -86,7 +87,7 @@ class PagingRecyclerAdapter<T : RecyclerView.ViewHolder>(
 
     private fun createErrorHolder(parent: ViewGroup): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return ErrorHolder(inflater.inflate(R.layout.view_paging_adapter_error_message, parent, false)) {
+        return ErrorHolder(inflater.inflate(layout.view_paging_adapter_error_message, parent, false)) {
             currentState = LOADING
             refreshCallbacks.onRetry(it.adapterPosition)
         }

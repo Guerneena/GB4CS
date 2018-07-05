@@ -6,17 +6,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.SearchView.OnQueryTextListener
-import com.hklouch.utils.getViewModel
 import com.hklouch.githubrepos4cs.R
+import com.hklouch.ui.ResourceListBaseFragment
 import com.hklouch.ui.State
-import com.hklouch.ui.browse.ReposListFragment
-import com.hklouch.ui.model.UiPagingModel
+import com.hklouch.ui.browse.BrowseFragment
+import com.hklouch.ui.model.UiPagingWrapper
+import com.hklouch.ui.model.UiProjectPreviewItem
+import com.hklouch.utils.getViewModel
 import com.hklouch.utils.hideKeyboard
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.search_activity.*
 import javax.inject.Inject
 
-class SearchActivity : AppCompatActivity(), ReposListFragment.Delegate {
+class SearchActivity : AppCompatActivity(), ResourceListBaseFragment.Delegate<UiProjectPreviewItem> {
 
     companion object {
         fun createIntent(source: Activity) = Intent(source, SearchActivity::class.java)
@@ -38,7 +40,7 @@ class SearchActivity : AppCompatActivity(), ReposListFragment.Delegate {
 
         if (savedInstanceState == null) {
             fragmentManager.beginTransaction()
-                    .add(R.id.repo_list_container, ReposListFragment())
+                    .add(R.id.repo_list_container, BrowseFragment())
                     .commit()
         }
 
@@ -57,7 +59,7 @@ class SearchActivity : AppCompatActivity(), ReposListFragment.Delegate {
     private fun setupSearchView() {
         search_toolbar_searchview.setOnQueryTextListener(object : OnQueryTextListener {
             override fun onQueryTextSubmit(text: String): Boolean {
-                (fragmentManager.findFragmentById(R.id.repo_list_container) as? ReposListFragment)?.clearData()
+                (fragmentManager.findFragmentById(R.id.repo_list_container) as? BrowseFragment)?.clearData()
                 viewModel.submitQuery(text)
                 return true
             }
@@ -80,7 +82,7 @@ class SearchActivity : AppCompatActivity(), ReposListFragment.Delegate {
         viewModel.retry()
     }
 
-    override fun onObserveProjects(observer: Observer<State<UiPagingModel>>) {
+    override fun onRequestDataSubscription(observer: Observer<State<UiPagingWrapper<UiProjectPreviewItem>>>) {
         viewModel.getResultRepos().observe(this, observer)
     }
 

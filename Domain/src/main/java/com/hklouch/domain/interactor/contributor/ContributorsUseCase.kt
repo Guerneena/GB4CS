@@ -1,7 +1,7 @@
-package com.hklouch.domain.interactor.contributors
+package com.hklouch.domain.interactor.contributor
 
 import com.hklouch.domain.interactor.ObservableUseCase
-import com.hklouch.domain.interactor.contributors.ContributorsUseCase.Params
+import com.hklouch.domain.interactor.contributor.ContributorsUseCase.Params
 import com.hklouch.domain.model.PagingWrapper
 import com.hklouch.domain.model.User
 import com.hklouch.domain.repository.ProjectsRepository
