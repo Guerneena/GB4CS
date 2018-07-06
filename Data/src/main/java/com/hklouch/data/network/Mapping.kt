@@ -18,7 +18,7 @@ fun <T, R> Result<T>.toPagingWrapper(pagingParameter: String,
                                      mapper: () -> List<R>?): PagingWrapper<R> {
     val resultList = mapper()
     val response = response()
-    if (resultList == null || response == null) {
+    if (isError || resultList == null || response == null || response.errorBody() != null) {
         error()?.let { throw it } ?: throw IllegalArgumentException("Unknown problem occurred")
     }
     val pageLinks = PageLinks(response.headers())

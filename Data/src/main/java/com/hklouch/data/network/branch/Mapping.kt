@@ -10,4 +10,4 @@ fun BranchJson.toBranch() = Branch(name = name,
 fun CommitJson.toCommit() = Commit(url = url,
                                    sha = sha)
 
-fun Collection<BranchJson>.toBranchList() = map { it.toBranch() }
+fun Collection<BranchJson>.toBranches() = map { it.toBranch() }

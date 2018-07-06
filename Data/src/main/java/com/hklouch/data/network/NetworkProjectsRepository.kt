@@ -1,6 +1,6 @@
 package com.hklouch.data.network
 
-import com.hklouch.data.network.branch.toBranchList
+import com.hklouch.data.network.branch.toBranches
 import com.hklouch.data.network.issue.toIssues
 import com.hklouch.data.network.project.toProject
 import com.hklouch.data.network.project.toProjectList
@@ -55,7 +55,7 @@ class NetworkProjectsRepository @Inject constructor(private val githubReposServi
                                               projectName, page,
                                               resultsPerPage ?: DEFAULT_RESULTS_PER_PAGE).map { result ->
             result.toPagingWrapper(pagingParameter = DEFAULT_PAGING_PARAM,
-                                   mapper = { result.response()?.body()?.toBranchList() })
+                                   mapper = { result.response()?.body()?.toBranches() })
 
         }
     }
