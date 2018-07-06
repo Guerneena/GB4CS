@@ -16,7 +16,7 @@
     <include layout="@layout/content_project_detail"/>
 
     <ProgressBar
-        android:id="@+id/resource_list_progress"
+        android:id="@+id/project_detail_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

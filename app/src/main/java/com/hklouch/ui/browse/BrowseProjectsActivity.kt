@@ -5,16 +5,12 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import com.hklouch.domain.interactor.browse.GetProjectsUseCase
 import com.hklouch.domain.interactor.browse.GetProjectsUseCase.Params
-import com.hklouch.domain.model.Project
 import com.hklouch.githubrepos4cs.R
-import com.hklouch.ui.ResourceBaseActivity
+import com.hklouch.presentation.browse.BrowseViewModel
+import com.hklouch.presentation.browse.BrowseViewModelFactory
 import com.hklouch.ui.ResourceListBaseFragment
-import com.hklouch.ui.ResourceListViewModel
-import com.hklouch.ui.ResourceListViewModelFactory
 import com.hklouch.ui.State
-import com.hklouch.ui.branch.BranchActivity
 import com.hklouch.ui.model.UiPagingWrapper
 import com.hklouch.ui.model.UiProjectPreviewItem
 import com.hklouch.ui.search.SearchActivity
@@ -26,13 +22,12 @@ import javax.inject.Inject
 
 class BrowseProjectsActivity : AppCompatActivity(), ResourceListBaseFragment.Delegate<UiProjectPreviewItem> {
 
-    @Inject lateinit var viewModelFactory: ResourceListViewModelFactory<Project,
-            UiProjectPreviewItem,
-            GetProjectsUseCase,
-            GetProjectsUseCase.Params>
-    private lateinit var viewModel: ResourceListViewModel<Project,
-            UiProjectPreviewItem,
-            GetProjectsUseCase.Params>
+    /* **************** */
+    /*        DI        */
+    /* **************** */
+    @Inject lateinit var viewModelFactory: BrowseViewModelFactory
+
+    private lateinit var viewModel: BrowseViewModel
 
     /* ***************** */
     /*     Life cycle    */
@@ -41,7 +36,7 @@ class BrowseProjectsActivity : AppCompatActivity(), ResourceListBaseFragment.Del
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AndroidInjection.inject(this)
-        viewModel = getViewModel { viewModelFactory.supply() }
+        viewModel = getViewModel { viewModelFactory.supply() } as BrowseViewModel
 
         setContentView(R.layout.browse_projects_activity)
 
@@ -71,9 +66,9 @@ class BrowseProjectsActivity : AppCompatActivity(), ResourceListBaseFragment.Del
         }
     }
 
-    /* ***************** */
-    /*  RepoList events  */
-    /* ***************** */
+    /* **************** */
+    /*  Content events  */
+    /* **************** */
 
     override fun onNextPageRequested(next: Int) {
         viewModel.fetchResource(Params(next))

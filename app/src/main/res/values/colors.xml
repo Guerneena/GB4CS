@@ -5,7 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="translucent">#00000000</color>
 
-    <color name="grey_border">#99D8D8D8</color>
+    <color name="grey_border">#D8D8D8</color>
     <color name="orange">#f48a3a</color>
-    <color name="off_white">#F7F7F7</color>
+    <color name="off_white">#99F7F7F7</color>
 </resources>

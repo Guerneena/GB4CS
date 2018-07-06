@@ -2,14 +2,12 @@ package com.hklouch.ui.issue
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
-import com.hklouch.domain.interactor.issue.IssuesUseCase
 import com.hklouch.domain.interactor.issue.IssuesUseCase.Params
-import com.hklouch.domain.model.Issue
 import com.hklouch.githubrepos4cs.R
+import com.hklouch.presentation.issue.IssueViewModel
+import com.hklouch.presentation.issue.IssueViewModelFactory
 import com.hklouch.ui.ResourceBaseActivity
 import com.hklouch.ui.ResourceListBaseFragment
-import com.hklouch.ui.ResourceListViewModel
-import com.hklouch.ui.ResourceListViewModelFactory
 import com.hklouch.ui.State
 import com.hklouch.ui.model.UiIssueItem
 import com.hklouch.ui.model.UiPagingWrapper
@@ -20,14 +18,12 @@ import javax.inject.Inject
 
 class IssueActivity : ResourceBaseActivity(), ResourceListBaseFragment.Delegate<UiIssueItem> {
 
-    @Inject lateinit var viewModelFactory: ResourceListViewModelFactory<Issue,
-            UiIssueItem,
-            IssuesUseCase,
-            IssuesUseCase.Params>
-    private lateinit var viewModel: ResourceListViewModel<Issue,
-            UiIssueItem,
-            IssuesUseCase.Params>
+    /* **************** */
+    /*        DI        */
+    /* **************** */
+    @Inject lateinit var viewModelFactory: IssueViewModelFactory
 
+    private lateinit var viewModel: IssueViewModel
 
     /* ***************** */
     /*     Lifecycle     */
@@ -38,7 +34,7 @@ class IssueActivity : ResourceBaseActivity(), ResourceListBaseFragment.Delegate<
 
         AndroidInjection.inject(this)
 
-        viewModel = getViewModel { viewModelFactory.supply(Params(ownerName, projectName)) }
+        viewModel = getViewModel { viewModelFactory.supply(Params(ownerName, projectName)) } as IssueViewModel
 
         if (savedInstanceState == null) {
             fragmentManager.beginTransaction()
@@ -47,9 +43,9 @@ class IssueActivity : ResourceBaseActivity(), ResourceListBaseFragment.Delegate<
         }
     }
 
-    /* ***************** */
-    /*  RepoList events  */
-    /* ***************** */
+    /* **************** */
+    /*  Content events  */
+    /* **************** */
 
     override fun onNextPageRequested(next: Int) {
         viewModel.lastQuery()?.let {

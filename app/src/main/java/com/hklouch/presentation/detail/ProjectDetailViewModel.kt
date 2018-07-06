@@ -1,4 +1,4 @@
-package com.hklouch.ui.detail
+package com.hklouch.presentation.detail
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
@@ -20,8 +20,8 @@ class ProjectViewModelFactory @Inject constructor(private val getProjectDetailUs
 }
 
 class ProjectDetailViewModel(private val getProjectDetailUseCase: GetProjectDetailUseCase,
-                             ownerName: String,
-                             projectName: String) : ViewModel() {
+                             val ownerName: String,
+                             val projectName: String) : ViewModel() {
 
     private val liveData: MutableLiveData<State<UiProjectItem>> = MutableLiveData()
 

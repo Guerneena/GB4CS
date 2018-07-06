@@ -1,4 +1,4 @@
-package com.hklouch.ui.browse
+package com.hklouch.presentation
 
 import android.arch.lifecycle.MutableLiveData
 import com.hklouch.domain.model.PagingWrapper

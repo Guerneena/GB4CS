@@ -2,14 +2,12 @@ package com.hklouch.ui.branch
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
-import com.hklouch.domain.interactor.branch.BranchesUseCase
 import com.hklouch.domain.interactor.branch.BranchesUseCase.Params
-import com.hklouch.domain.model.Branch
 import com.hklouch.githubrepos4cs.R
+import com.hklouch.presentation.branch.BranchViewModel
+import com.hklouch.presentation.branch.BranchViewModelFactory
 import com.hklouch.ui.ResourceBaseActivity
 import com.hklouch.ui.ResourceListBaseFragment
-import com.hklouch.ui.ResourceListViewModel
-import com.hklouch.ui.ResourceListViewModelFactory
 import com.hklouch.ui.State
 import com.hklouch.ui.model.UiBranchItem
 import com.hklouch.ui.model.UiPagingWrapper
@@ -20,14 +18,12 @@ import javax.inject.Inject
 
 class BranchActivity : ResourceBaseActivity(), ResourceListBaseFragment.Delegate<UiBranchItem> {
 
-    @Inject lateinit var viewModelFactory: ResourceListViewModelFactory<Branch,
-            UiBranchItem,
-            BranchesUseCase,
-            BranchesUseCase.Params>
-    private lateinit var viewModel: ResourceListViewModel<Branch,
-            UiBranchItem,
-            BranchesUseCase.Params>
+    /* **************** */
+    /*        DI        */
+    /* **************** */
 
+    @Inject lateinit var viewModelFactory: BranchViewModelFactory
+    private lateinit var viewModel: BranchViewModel
 
     /* ***************** */
     /*     Lifecycle     */
@@ -38,7 +34,7 @@ class BranchActivity : ResourceBaseActivity(), ResourceListBaseFragment.Delegate
 
         AndroidInjection.inject(this)
 
-        viewModel = getViewModel { viewModelFactory.supply(Params(ownerName, projectName)) }
+        viewModel = getViewModel { viewModelFactory.supply(Params(ownerName, projectName)) } as BranchViewModel
 
         if (savedInstanceState == null) {
             fragmentManager.beginTransaction()
@@ -47,9 +43,9 @@ class BranchActivity : ResourceBaseActivity(), ResourceListBaseFragment.Delegate
         }
     }
 
-    /* ***************** */
-    /*  RepoList events  */
-    /* ***************** */
+    /* **************** */
+    /*  Content events  */
+    /* **************** */
 
     override fun onNextPageRequested(next: Int) {
         viewModel.lastQuery()?.let {

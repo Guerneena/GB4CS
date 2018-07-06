@@ -9,8 +9,8 @@ import com.hklouch.githubrepos4cs.ui.Data
 import com.hklouch.ui.State.Error
 import com.hklouch.ui.State.Loading
 import com.hklouch.ui.State.Success
-import com.hklouch.ui.detail.ProjectDetailViewModel
-import com.hklouch.ui.detail.ProjectDetailViewModel.ProjectDetailSubscriber
+import com.hklouch.presentation.detail.ProjectDetailViewModel
+import com.hklouch.presentation.detail.ProjectDetailViewModel.ProjectDetailSubscriber
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.eq

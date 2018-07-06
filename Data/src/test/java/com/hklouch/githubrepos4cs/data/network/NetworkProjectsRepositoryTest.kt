@@ -1,10 +1,10 @@
 package com.hklouch.githubrepos4cs.data.network
 
-import com.hklouch.data.network.project.ProjectJson
-import com.hklouch.data.network.project.ProjectSearchResponse
 import com.hklouch.data.network.GithubReposService
 import com.hklouch.data.network.NetworkProjectsRepository
-import com.hklouch.domain.model.ProjectList
+import com.hklouch.data.network.project.ProjectJson
+import com.hklouch.data.network.project.ProjectSearchResponse
+import com.hklouch.domain.model.PagingWrapper
 import com.hklouch.githubrepos4cs.data.mapper.Data
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -42,9 +42,9 @@ class NetworkProjectsRepositoryTest {
         val response = Response.success(listOf(projectData.json.project))
         val getProjectsResult = Result.response(response)
         given(githubReposService.getProjects(anyInt())).willReturn(Observable.just(getProjectsResult))
-        val expected = ProjectList(nextPage = null,
-                                   lastPage = null,
-                                   projects = listOf(projectData.domain.project))
+        val expected = PagingWrapper(nextPage = null,
+                                     lastPage = null,
+                                     items = listOf(projectData.domain.project))
         //When
         projectsRepository.getProjects(1).test()
                 //Then
@@ -70,9 +70,9 @@ class NetworkProjectsRepositoryTest {
         val response = Response.success(listOf(projectData.json.project), responseHeaders)
         val getProjectsResult = Result.response(response)
         given(githubReposService.getProjects(anyInt())).willReturn(Observable.just(getProjectsResult))
-        val expected = ProjectList(nextPage = 364,
+        val expected = PagingWrapper(nextPage = 364,
                                    lastPage = null,
-                                   projects = listOf(projectData.domain.project))
+                                   items = listOf(projectData.domain.project))
         //When
         projectsRepository.getProjects(1).test()
                 //Then
@@ -86,9 +86,9 @@ class NetworkProjectsRepositoryTest {
         val response = Response.success(listOf(projectData.json.project), responseHeaders)
         val getProjectsResult = Result.response(response)
         given(githubReposService.getProjects(anyInt())).willReturn(Observable.just(getProjectsResult))
-        val expected = ProjectList(nextPage = null,
+        val expected = PagingWrapper(nextPage = null,
                                    lastPage = 833,
-                                   projects = listOf(projectData.domain.project))
+                                   items = listOf(projectData.domain.project))
         //When
         projectsRepository.getProjects(1).test()
                 //Then
@@ -102,9 +102,9 @@ class NetworkProjectsRepositoryTest {
         val response = Response.success(listOf(projectData.json.project), responseHeaders)
         val getProjectsResult = Result.response(response)
         given(githubReposService.getProjects(anyInt())).willReturn(Observable.just(getProjectsResult))
-        val expected = ProjectList(nextPage = 362,
+        val expected = PagingWrapper(nextPage = 362,
                                    lastPage = 2010784,
-                                   projects = listOf(projectData.domain.project))
+                                   items = listOf(projectData.domain.project))
         //When
         projectsRepository.getProjects(1).test()
                 //Then
@@ -144,9 +144,9 @@ class NetworkProjectsRepositoryTest {
         val response = Response.success(projectData.json.projectSearchResponse)
         val searchProjectsResult = Result.response(response)
         given(githubReposService.search(anyString(), anyInt(), anyInt())).willReturn(Observable.just(searchProjectsResult))
-        val expected = ProjectList(nextPage = null,
+        val expected = PagingWrapper(nextPage = null,
                                    lastPage = null,
-                                   projects = listOf(projectData.domain.project))
+                                   items = listOf(projectData.domain.project))
         //When
         projectsRepository.searchProjects(query = "q",
                                           page = null,
@@ -176,9 +176,9 @@ class NetworkProjectsRepositoryTest {
         val response = Response.success(projectData.json.projectSearchResponse, responseHeaders)
         val searchProjectsResult = Result.response(response)
         given(githubReposService.search(anyString(), anyInt(), anyInt())).willReturn(Observable.just(searchProjectsResult))
-        val expected = ProjectList(nextPage = 3,
+        val expected = PagingWrapper(nextPage = 3,
                                    lastPage = null,
-                                   projects = listOf(projectData.domain.project))
+                                   items = listOf(projectData.domain.project))
         //When
         projectsRepository.searchProjects(query = "q",
                                           page = null,
@@ -194,9 +194,9 @@ class NetworkProjectsRepositoryTest {
         val response = Response.success(projectData.json.projectSearchResponse, responseHeaders)
         val searchProjectsResult = Result.response(response)
         given(githubReposService.search(anyString(), anyInt(), anyInt())).willReturn(Observable.just(searchProjectsResult))
-        val expected = ProjectList(nextPage = null,
+        val expected = PagingWrapper(nextPage = null,
                                    lastPage = 38,
-                                   projects = listOf(projectData.domain.project))
+                                   items = listOf(projectData.domain.project))
         //When
         projectsRepository.searchProjects(query = "q",
                                           page = null,
@@ -212,9 +212,9 @@ class NetworkProjectsRepositoryTest {
         val response = Response.success(projectData.json.projectSearchResponse, responseHeaders)
         val searchProjectsResult = Result.response(response)
         given(githubReposService.search(anyString(), anyInt(), anyInt())).willReturn(Observable.just(searchProjectsResult))
-        val expected = ProjectList(nextPage = 2,
+        val expected = PagingWrapper(nextPage = 2,
                                    lastPage = 38,
-                                   projects = listOf(projectData.domain.project))
+                                   items = listOf(projectData.domain.project))
         //When
         projectsRepository.searchProjects(query = "q",
                                           page = null,

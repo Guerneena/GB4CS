@@ -2,14 +2,12 @@ package com.hklouch.ui.pull
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
-import com.hklouch.domain.interactor.pull.PullsUseCase
 import com.hklouch.domain.interactor.pull.PullsUseCase.Params
-import com.hklouch.domain.model.Pull
 import com.hklouch.githubrepos4cs.R
+import com.hklouch.presentation.pull.PullViewModel
+import com.hklouch.presentation.pull.PullViewModelFactory
 import com.hklouch.ui.ResourceBaseActivity
 import com.hklouch.ui.ResourceListBaseFragment
-import com.hklouch.ui.ResourceListViewModel
-import com.hklouch.ui.ResourceListViewModelFactory
 import com.hklouch.ui.State
 import com.hklouch.ui.model.UiPagingWrapper
 import com.hklouch.ui.model.UiPullItem
@@ -21,14 +19,12 @@ import com.hklouch.domain.interactor.pull.PullsUseCase.Params.State as PullState
 
 class PullActivity : ResourceBaseActivity(), ResourceListBaseFragment.Delegate<UiPullItem> {
 
-    @Inject lateinit var viewModelFactory: ResourceListViewModelFactory<Pull,
-            UiPullItem,
-            PullsUseCase,
-            PullsUseCase.Params>
-    private lateinit var viewModel: ResourceListViewModel<Pull,
-            UiPullItem,
-            PullsUseCase.Params>
+    /* **************** */
+    /*        DI        */
+    /* **************** */
+    @Inject lateinit var viewModelFactory: PullViewModelFactory
 
+    private lateinit var viewModel: PullViewModel
 
     /* ***************** */
     /*     Lifecycle     */
@@ -39,7 +35,7 @@ class PullActivity : ResourceBaseActivity(), ResourceListBaseFragment.Delegate<U
 
         AndroidInjection.inject(this)
 
-        viewModel = getViewModel { viewModelFactory.supply(Params(ownerName, projectName, PullState.OPEN)) }
+        viewModel = getViewModel { viewModelFactory.supply(Params(ownerName, projectName, PullState.OPEN)) } as PullViewModel
 
         if (savedInstanceState == null) {
             fragmentManager.beginTransaction()
@@ -48,9 +44,9 @@ class PullActivity : ResourceBaseActivity(), ResourceListBaseFragment.Delegate<U
         }
     }
 
-    /* ***************** */
-    /*  RepoList events  */
-    /* ***************** */
+    /* **************** */
+    /*  Content events  */
+    /* **************** */
 
     override fun onNextPageRequested(next: Int) {
         viewModel.lastQuery()?.let {

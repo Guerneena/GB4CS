@@ -23,16 +23,16 @@ class MappingTest {
 
     @Test
     fun should_map_project_search_response_to_project_list() {
-        Truth.assertThat(projectData.json.projectSearchResponse.toProjectList(nextPage = 2, lastPage = 4))
-                .isEqualTo(projectData.domain.projectList.copy(nextPage = 2, lastPage = 4))
+        Truth.assertThat(projectData.json.projectSearchResponse.toProjectList())
+                .isEqualTo(projectData.domain.projectList)
 
     }
 
     @Test
     fun should_map_collection_of_project_json_to_project_list() {
         val projectJsonCollection = listOf(projectData.json.project)
-        Truth.assertThat(projectJsonCollection.toProjectList(nextPage = 2, lastPage = 4))
-                .isEqualTo(projectData.domain.projectList.copy(nextPage = 2, lastPage = 4))
+        Truth.assertThat(projectJsonCollection.toProjectList())
+                .isEqualTo(projectData.domain.projectList)
 
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<ScrollView
     android:id="@+id/content_project_detail"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -10,150 +10,212 @@
     tools:context="com.hklouch.ui.detail.ProjectDetailActivity"
     tools:showIn="@layout/project_detail_activity">
 
-    <android.support.constraint.Group
-        android:id="@+id/group"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/off_white"
-        app:layout_constraintBottom_toBottomOf="@id/project_detail_owner_separator"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <ImageView
-        android:id="@+id/owner_image"
-        android:layout_width="@dimen/value_64dp"
-        android:layout_height="@dimen/value_64dp"
-        android:layout_marginStart="@dimen/value_16dp"
-        android:layout_marginTop="@dimen/value_16dp"
-        android:contentDescription="@string/avatar"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:background="@color/colorPrimary"/>
-
-    <TextView
-        android:id="@+id/owner_name_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/value_8dp"
-        android:layout_marginStart="@dimen/value_16dp"
-        android:textAppearance="@style/AppTheme.TextAppearance.Title"
-        app:layout_constraintBottom_toTopOf="@id/project_name_text"
-        app:layout_constraintEnd_toStartOf="@id/project_detail_is_fork"
-        app:layout_constraintStart_toEndOf="@id/owner_image"
-        app:layout_constraintTop_toTopOf="@id/owner_image"
-        tools:text="Joe"/>
-
-    <TextView
-        android:id="@+id/project_name_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/value_8dp"
-        app:layout_constraintEnd_toEndOf="@id/owner_name_text"
-        app:layout_constraintStart_toStartOf="@id/owner_name_text"
-        app:layout_constraintTop_toBottomOf="@id/owner_name_text"
-        tools:text="A nice project"/>
-
-    <TextView
-        android:id="@+id/project_detail_description"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/value_8dp"
-        android:maxLines="4"
-        app:layout_constraintEnd_toEndOf="@id/owner_name_text"
-        app:layout_constraintStart_toStartOf="@+id/project_name_text"
-        app:layout_constraintTop_toBottomOf="@+id/project_name_text"
-        tools:text="Project description"/>
-
-    <TextView
-        android:id="@+id/project_detail_is_fork"
-        style="@style/AppTheme.TextAppearance.Legend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/value_16dp"
-        android:drawableTop="@drawable/ic_fork_miniature"
-        android:text="@string/project_detail_is_fork"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="@+id/group"
-        app:layout_constraintTop_toTopOf="@+id/owner_name_text"/>
-
-    <View android:id="@+id/project_detail_owner_separator"
-          style="@style/separatorHorizontal"
-          android:layout_marginTop="@dimen/value_16dp"
-          app:layout_constraintTop_toBottomOf="@id/project_detail_description"
-          tools:layout_height="2dp"/>
-
-
-    <!-- Details -->
-
-    <TableLayout
-        android:id="@+id/tableLayout"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/value_16dp"
-        android:shrinkColumns="0"
-        android:stretchColumns="0"
-        app:layout_constraintTop_toBottomOf="@id/project_detail_owner_separator">
+        >
 
-        <TableRow>
+        <android.support.constraint.Group
+            android:id="@+id/group"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/off_white"
+            app:layout_constraintBottom_toBottomOf="@id/project_detail_owner_separator"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-            <TextView
-                style="@style/AppTheme.TextAppearance.Title"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_star_border"
-                android:text="@string/project_detail_stars"/>
+        <ImageView
+            android:id="@+id/project_detail_owner_image"
+            android:layout_width="@dimen/value_64dp"
+            android:layout_height="@dimen/value_64dp"
+            android:layout_marginStart="@dimen/value_16dp"
+            android:layout_marginTop="@dimen/value_16dp"
+            android:contentDescription="@string/avatar"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="@color/colorPrimary"/>
 
-            <TextView
-                android:id="@+id/project_detail_stars"
-                android:gravity="end"
-                android:padding="@dimen/value_16dp"
-                tools:text="22"/>
-        </TableRow>
+        <TextView
+            android:id="@+id/project_detail_owner_name_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/value_8dp"
+            android:layout_marginStart="@dimen/value_16dp"
+            android:textAppearance="@style/AppTheme.TextAppearance.Title"
+            app:layout_constraintBottom_toTopOf="@id/project_name_text"
+            app:layout_constraintEnd_toStartOf="@id/project_detail_is_fork"
+            app:layout_constraintStart_toEndOf="@id/project_detail_owner_image"
+            app:layout_constraintTop_toTopOf="@id/project_detail_owner_image"
+            tools:text="Paul"/>
 
-        <TableRow>
+        <TextView
+            android:id="@+id/project_detail_name_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/value_8dp"
+            app:layout_constraintEnd_toEndOf="@+id/project_detail_owner_name_text"
+            app:layout_constraintStart_toStartOf="@id/project_detail_owner_name_text"
+            app:layout_constraintTop_toBottomOf="@id/project_detail_owner_name_text" tools:text="A nice project"/>
 
-            <TextView
-                style="@style/AppTheme.TextAppearance.Title"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_fork"
-                android:text="@string/project_detail_forks"/>
+        <TextView
+            android:id="@+id/project_detail_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="@dimen/value_8dp"
+            android:maxLines="4"
+            app:layout_constraintEnd_toEndOf="@+id/group"
+            app:layout_constraintStart_toStartOf="@id/project_detail_name_text"
+            app:layout_constraintTop_toBottomOf="@id/project_detail_name_text" tools:text="Project description"/>
 
-            <TextView
-                android:id="@+id/project_detail_forks"
-                android:gravity="end"
-                android:padding="@dimen/value_16dp"
-                tools:text="12"/>
-        </TableRow>
+        <TextView
+            android:id="@+id/project_detail_is_fork"
+            style="@style/AppTheme.TextAppearance.Legend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/value_16dp"
+            android:drawableTop="@drawable/ic_forks_miniature"
+            android:text="@string/project_detail_is_fork"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="@+id/group"
+            app:layout_constraintTop_toTopOf="@+id/project_detail_owner_name_text"/>
 
-        <TableRow>
-
-            <TextView
-                style="@style/AppTheme.TextAppearance.Title"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_watcher"
-                android:text="@string/project_detail_watchers"/>
-
-            <TextView
-                android:id="@+id/project_detail_watchers"
-                android:gravity="end"
-                android:padding="@dimen/value_16dp"
-                tools:text="15"/>
-        </TableRow>
+        <View android:id="@+id/project_detail_owner_separator"
+              style="@style/separatorHorizontal"
+              android:layout_marginTop="@dimen/value_16dp"
+              app:layout_constraintTop_toBottomOf="@id/project_detail_description"
+              tools:layout_height="2dp"/>
 
 
-        <TableRow>
+        <!-- Details -->
 
-            <TextView
-                style="@style/AppTheme.TextAppearance.Title"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_issue"
-                android:text="@string/project_detail_issues"/>
+        <TextView
+            android:id="@+id/project_detail_branches"
+            style="@style/AppTheme.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/value_16dp"
+            android:drawableTop="@drawable/ic_branch"
+            android:padding="@dimen/value_8dp"
+            android:text="@string/project_detail_branches"
+            app:layout_constraintEnd_toStartOf="@id/project_detail_pulls"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/group"/>
 
-            <TextView
-                android:id="@+id/project_detail_issues"
-                android:gravity="end"
-                android:padding="@dimen/value_16dp"
-                tools:text="15"/>
-        </TableRow>
-    </TableLayout>
+        <TextView
+            android:id="@+id/project_detail_pulls"
+            style="@style/AppTheme.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:drawableTop="@drawable/ic_pull"
+            android:padding="@dimen/value_8dp"
+            android:text="@string/project_detail_pulls"
+            app:layout_constraintBottom_toBottomOf="@id/project_detail_branches"
+            app:layout_constraintEnd_toStartOf="@id/project_detail_contributors"
+            app:layout_constraintStart_toEndOf="@id/project_detail_branches"
+            app:layout_constraintTop_toTopOf="@id/project_detail_branches"
+            />
 
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/project_detail_contributors"
+            style="@style/AppTheme.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:drawableTop="@drawable/ic_user"
+            android:padding="@dimen/value_8dp"
+            android:text="@string/project_detail_contributors"
+            app:layout_constraintBottom_toBottomOf="@id/project_detail_branches"
+            app:layout_constraintEnd_toStartOf="@id/project_detail_issues"
+            app:layout_constraintStart_toEndOf="@id/project_detail_pulls"
+            app:layout_constraintTop_toTopOf="@id/project_detail_branches"
+            />
+
+        <TextView
+            android:id="@+id/project_detail_issues"
+            style="@style/AppTheme.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:drawableTop="@drawable/ic_bug_report"
+            android:padding="@dimen/value_8dp"
+            android:text="@string/project_detail_issues"
+            app:layout_constraintBottom_toBottomOf="@id/project_detail_branches"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/project_detail_contributors"
+            app:layout_constraintTop_toTopOf="@id/project_detail_branches"/>
+
+        <TableLayout
+            android:id="@+id/tableLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/value_16dp"
+            android:padding="@dimen/value_16dp"
+            android:shrinkColumns="0"
+            android:stretchColumns="0"
+            app:layout_constraintTop_toBottomOf="@id/project_detail_branches">
+
+            <TableRow>
+
+                <TextView
+                    style="@style/AppTheme.TextAppearance.Title"
+                    android:drawablePadding="4dp"
+                    android:drawableStart="@drawable/ic_star_border"
+                    android:text="@string/project_detail_stars"/>
+
+                <TextView
+                    android:id="@+id/project_detail_stars"
+                    android:gravity="end"
+                    android:padding="@dimen/value_16dp"
+                    tools:text="22"/>
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    style="@style/AppTheme.TextAppearance.Title"
+                    android:drawablePadding="4dp"
+                    android:drawableStart="@drawable/ic_forks"
+                    android:text="@string/project_detail_forks"/>
+
+                <TextView
+                    android:id="@+id/project_detail_forks"
+                    android:gravity="end"
+                    android:padding="@dimen/value_16dp"
+                    tools:text="12"/>
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    style="@style/AppTheme.TextAppearance.Title"
+                    android:drawablePadding="4dp"
+                    android:drawableStart="@drawable/ic_watcher"
+                    android:text="@string/project_detail_watchers"/>
+
+                <TextView
+                    android:id="@+id/project_detail_watchers"
+                    android:gravity="end"
+                    android:padding="@dimen/value_16dp"
+                    tools:text="15"/>
+            </TableRow>
+
+
+            <!-- <TableRow>
+
+                 <TextView
+                     style="@style/AppTheme.TextAppearance.Title"
+                     android:drawablePadding="4dp"
+                     android:drawableStart="@drawable/ic_issue"
+                     android:text="@string/project_detail_issues"/>
+
+                 <TextView
+                     android:id="@+id/project_detail_issues"
+                     android:gravity="end"
+                     android:padding="@dimen/value_16dp"
+                     tools:text="15"/>
+             </TableRow>-->
+        </TableLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

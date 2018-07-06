@@ -4,16 +4,21 @@ import android.app.Application
 import android.content.Context
 import com.hklouch.domain.interactor.branch.BranchesUseCase
 import com.hklouch.domain.interactor.browse.GetProjectsUseCase
-import com.hklouch.domain.interactor.browse.GetProjectsUseCase.Params
 import com.hklouch.domain.interactor.contributor.ContributorsUseCase
 import com.hklouch.domain.interactor.issue.IssuesUseCase
 import com.hklouch.domain.interactor.pull.PullsUseCase
+import com.hklouch.domain.interactor.search.SearchProjectsUseCase
 import com.hklouch.domain.model.Branch
 import com.hklouch.domain.model.Issue
 import com.hklouch.domain.model.Project
 import com.hklouch.domain.model.Pull
 import com.hklouch.domain.model.User
-import com.hklouch.ui.ResourceListViewModelFactory
+import com.hklouch.presentation.branch.BranchViewModelFactory
+import com.hklouch.presentation.browse.BrowseViewModelFactory
+import com.hklouch.presentation.contributor.ContributorViewModelFactory
+import com.hklouch.presentation.issue.IssueViewModelFactory
+import com.hklouch.presentation.pull.PullViewModelFactory
+import com.hklouch.presentation.search.SearchViewModelFactory
 import com.hklouch.ui.branch.BranchActivity
 import com.hklouch.ui.branch.BranchFragment
 import com.hklouch.ui.browse.BrowseFragment
@@ -23,11 +28,6 @@ import com.hklouch.ui.contributor.ContributorFragment
 import com.hklouch.ui.detail.ProjectDetailActivity
 import com.hklouch.ui.issue.IssueActivity
 import com.hklouch.ui.issue.IssueFragment
-import com.hklouch.ui.model.UiBranchItem
-import com.hklouch.ui.model.UiIssueItem
-import com.hklouch.ui.model.UiProjectPreviewItem
-import com.hklouch.ui.model.UiPullItem
-import com.hklouch.ui.model.UiUserItem
 import com.hklouch.ui.model.toUiBranchItem
 import com.hklouch.ui.model.toUiIssueItem
 import com.hklouch.ui.model.toUiProjectPreviewItem
@@ -48,53 +48,40 @@ abstract class AppModule {
     companion object {
         @Provides
         @JvmStatic
-        fun provideBrowseProjectsViewModelFactory(getProjectsUseCase: GetProjectsUseCase):
-                ResourceListViewModelFactory<Project,
-                        UiProjectPreviewItem,
-                        GetProjectsUseCase,
-                        Params> {
-            return ResourceListViewModelFactory(getProjectsUseCase, Project::toUiProjectPreviewItem)
+        fun provideBrowseProjectsViewModelFactory(getProjectsUseCase: GetProjectsUseCase): BrowseViewModelFactory {
+            return BrowseViewModelFactory(getProjectsUseCase, Project::toUiProjectPreviewItem)
         }
 
         @Provides
         @JvmStatic
-        fun provideBranchViewModelFactory(branchesUseCase: BranchesUseCase):
-                ResourceListViewModelFactory<Branch,
-                        UiBranchItem,
-                        BranchesUseCase,
-                        BranchesUseCase.Params> {
-            return ResourceListViewModelFactory(branchesUseCase, Branch::toUiBranchItem)
+        fun provideBranchViewModelFactory(branchesUseCase: BranchesUseCase): BranchViewModelFactory {
+            return BranchViewModelFactory(branchesUseCase, Branch::toUiBranchItem)
         }
 
 
         @Provides
         @JvmStatic
-        fun provideIssueViewModelFactory(issuesUseCase: IssuesUseCase):
-                ResourceListViewModelFactory<Issue,
-                        UiIssueItem,
-                        IssuesUseCase,
-                        IssuesUseCase.Params> {
-            return ResourceListViewModelFactory(issuesUseCase, Issue::toUiIssueItem)
+        fun provideIssueViewModelFactory(issuesUseCase: IssuesUseCase): IssueViewModelFactory {
+            return IssueViewModelFactory(issuesUseCase, Issue::toUiIssueItem)
         }
 
 
         @Provides
         @JvmStatic
-        fun providePullViewModelFactory(pullsUseCase: PullsUseCase): ResourceListViewModelFactory<Pull,
-                UiPullItem,
-                PullsUseCase,
-                PullsUseCase.Params> {
-            return ResourceListViewModelFactory(pullsUseCase, Pull::toUiPullItem)
+        fun providePullViewModelFactory(pullsUseCase: PullsUseCase): PullViewModelFactory {
+            return PullViewModelFactory(pullsUseCase, Pull::toUiPullItem)
         }
-
 
         @Provides
         @JvmStatic
-        fun provideContributorsViewModelFactory(contributorsUseCase: ContributorsUseCase): ResourceListViewModelFactory<User,
-                UiUserItem,
-                ContributorsUseCase,
-                ContributorsUseCase.Params> {
-            return ResourceListViewModelFactory(contributorsUseCase, User::toUiUserItem)
+        fun provideContributorsViewModelFactory(contributorsUseCase: ContributorsUseCase): ContributorViewModelFactory {
+            return ContributorViewModelFactory(contributorsUseCase, User::toUiUserItem)
+        }
+
+        @Provides
+        @JvmStatic
+        fun provideSearchViewModelFactory(searchUseCase: SearchProjectsUseCase): SearchViewModelFactory {
+            return SearchViewModelFactory(searchUseCase, Project::toUiProjectPreviewItem)
         }
     }
 

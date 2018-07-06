@@ -7,14 +7,17 @@
     <string name="issues_activity_title">Issues</string>
 
     <string name="project_detail_activity_title">Details</string>
+    <string name="project_detail_branches">Branches</string>
+    <string name="project_detail_contributors">Contributors</string>
     <string name="project_detail_forks">Forks</string>
     <string name="project_detail_not_fork">Not a fork</string>
     <string name="project_detail_is_fork">Is a fork</string>
-    <string name="project_detail_issues">Issues</string>
+    <string name="project_detail_issues">Issues (%1$s)</string>
+    <string name="project_detail_pulls">PRs</string>
     <string name="project_detail_stars">Stars</string>
     <string name="project_detail_watchers">Watchers</string>
 
-    <string name="pulls_activity_title">Pulls</string>
+    <string name="pulls_activity_title">Pull requests</string>
 
     <string name="repo_list_error">A error occurred</string>
     <string name="repo_list_menu_search">Search a repository</string>

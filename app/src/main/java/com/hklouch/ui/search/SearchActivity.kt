@@ -6,7 +6,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.SearchView.OnQueryTextListener
+import com.hklouch.domain.interactor.search.SearchProjectsUseCase.Params
 import com.hklouch.githubrepos4cs.R
+import com.hklouch.presentation.search.SearchViewModel
+import com.hklouch.presentation.search.SearchViewModelFactory
 import com.hklouch.ui.ResourceListBaseFragment
 import com.hklouch.ui.State
 import com.hklouch.ui.browse.BrowseFragment
@@ -24,7 +27,11 @@ class SearchActivity : AppCompatActivity(), ResourceListBaseFragment.Delegate<Ui
         fun createIntent(source: Activity) = Intent(source, SearchActivity::class.java)
     }
 
+    /* **************** */
+    /*        DI        */
+    /* **************** */
     @Inject lateinit var viewModelFactory: SearchViewModelFactory
+
     private lateinit var viewModel: SearchViewModel
 
     /* ***************** */
@@ -34,7 +41,7 @@ class SearchActivity : AppCompatActivity(), ResourceListBaseFragment.Delegate<Ui
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AndroidInjection.inject(this)
-        viewModel = getViewModel { viewModelFactory.supply() }
+        viewModel = getViewModel { viewModelFactory.supply() } as SearchViewModel
 
         setContentView(R.layout.search_activity)
 
@@ -60,7 +67,7 @@ class SearchActivity : AppCompatActivity(), ResourceListBaseFragment.Delegate<Ui
         search_toolbar_searchview.setOnQueryTextListener(object : OnQueryTextListener {
             override fun onQueryTextSubmit(text: String): Boolean {
                 (fragmentManager.findFragmentById(R.id.repo_list_container) as? BrowseFragment)?.clearData()
-                viewModel.submitQuery(text)
+                viewModel.fetchResource(Params(text))
                 return true
             }
 
@@ -70,20 +77,22 @@ class SearchActivity : AppCompatActivity(), ResourceListBaseFragment.Delegate<Ui
         })
     }
 
-    /* ***************** */
-    /*  RepoList events  */
-    /* ***************** */
+    /* **************** */
+    /*  Content events  */
+    /* **************** */
 
     override fun onNextPageRequested(next: Int) {
-        viewModel.requestNextPage(next)
+        viewModel.lastQuery()?.let {
+            viewModel.fetchResource(it.copy(nextPage = next))
+        }
     }
 
     override fun onRetryRequested(next: Int) {
-        viewModel.retry()
+        onNextPageRequested(next)
     }
 
     override fun onRequestDataSubscription(observer: Observer<State<UiPagingWrapper<UiProjectPreviewItem>>>) {
-        viewModel.getResultRepos().observe(this, observer)
+        viewModel.getResourceResult().observe(this, observer)
     }
 
     override fun onLoadSuccess() {

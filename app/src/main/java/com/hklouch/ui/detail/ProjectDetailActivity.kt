@@ -7,18 +7,25 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import com.hklouch.githubrepos4cs.R
+import com.hklouch.presentation.detail.ProjectDetailViewModel
+import com.hklouch.presentation.detail.ProjectViewModelFactory
+import com.hklouch.ui.ResourceBaseActivity
 import com.hklouch.ui.State
 import com.hklouch.ui.State.Error
 import com.hklouch.ui.State.Loading
 import com.hklouch.ui.State.Success
+import com.hklouch.ui.branch.BranchActivity
+import com.hklouch.ui.contributor.ContributorActivity
+import com.hklouch.ui.issue.IssueActivity
 import com.hklouch.ui.model.UiProjectItem
+import com.hklouch.ui.pull.PullActivity
 import com.hklouch.utils.getViewModel
 import com.hklouch.utils.rootView
 import dagger.android.AndroidInjection
 import timber.log.Timber
 import javax.inject.Inject
 
-class ProjectDetailActivity : AppCompatActivity() {
+class ProjectDetailActivity : AppCompatActivity(), ProjectDetailViewManager.ViewDelegate {
 
     companion object {
 
@@ -55,7 +62,7 @@ class ProjectDetailActivity : AppCompatActivity() {
                                     intent.getStringExtra(PROJECT_NAME_EXTRA))
         }
 
-        projectDetailViewManager = ProjectDetailViewManager(rootView)
+        projectDetailViewManager = ProjectDetailViewManager(this, rootView)
     }
 
     override fun onResume() {
@@ -81,7 +88,38 @@ class ProjectDetailActivity : AppCompatActivity() {
         }
     }
 
+    /* ***************** */
+    /*     View events   */
+    /* ***************** */
+
     private fun displaySuccess(project: UiProjectItem) {
         projectDetailViewManager.bind(project)
+    }
+
+    override fun onBranchesClick() {
+        startActivity(ResourceBaseActivity.createIntent(this, BranchActivity::class.java,
+                                                        ownerName = detailViewModel.ownerName,
+                                                        projectName = detailViewModel.projectName))
+    }
+
+    override fun onPullsClick() {
+        startActivity(ResourceBaseActivity.createIntent(this,
+                                                        PullActivity::class.java,
+                                                        ownerName = detailViewModel.ownerName,
+                                                        projectName = detailViewModel.projectName))
+    }
+
+    override fun onIssuesClick() {
+        startActivity(ResourceBaseActivity.createIntent(this,
+                                                        IssueActivity::class.java,
+                                                        ownerName = detailViewModel.ownerName,
+                                                        projectName = detailViewModel.projectName))
+    }
+
+    override fun onContributorsClick() {
+        startActivity(ResourceBaseActivity.createIntent(this,
+                                                        ContributorActivity::class.java,
+                                                        ownerName = detailViewModel.ownerName,
+                                                        projectName = detailViewModel.projectName))
     }
 }

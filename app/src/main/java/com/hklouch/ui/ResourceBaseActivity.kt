@@ -5,10 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.hklouch.githubrepos4cs.R
-import com.hklouch.ui.browse.BrowseFragment
-import dagger.android.AndroidInjection
 
-abstract class ResourceBaseActivity: AppCompatActivity(){
+abstract class ResourceBaseActivity : AppCompatActivity() {
 
     companion object {
 
@@ -47,6 +45,4 @@ abstract class ResourceBaseActivity: AppCompatActivity(){
     }
 
     override fun onSupportNavigateUp() = finish().let { true }
-
-
 }

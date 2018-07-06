@@ -4,13 +4,16 @@ import android.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth
 import com.hklouch.domain.interactor.browse.GetProjectsUseCase
 import com.hklouch.domain.interactor.browse.GetProjectsUseCase.Params
+import com.hklouch.domain.model.Project
 import com.hklouch.domain.model.ProjectList
 import com.hklouch.githubrepos4cs.ui.Data
+import com.hklouch.presentation.browse.BrowseViewModel
 import com.hklouch.ui.State.Error
 import com.hklouch.ui.State.Loading
 import com.hklouch.ui.State.Success
 import com.hklouch.ui.browse.ProjectsObserver
 import com.hklouch.ui.browse.ReposListViewModel
+import com.hklouch.ui.model.toUiProjectPreviewItem
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.eq
@@ -29,7 +32,7 @@ class ReposListViewModelTest {
 
     private var getProjectsUseCase = mock<GetProjectsUseCase>()
 
-    private lateinit var reposListViewModel: ReposListViewModel
+    private lateinit var reposListViewModel: BrowseViewModel
 
     private val projectData = Data()
 
@@ -38,7 +41,7 @@ class ReposListViewModelTest {
 
     @Before
     fun before() {
-        reposListViewModel = ReposListViewModel(getProjectsUseCase)
+        reposListViewModel = BrowseViewModel(getProjectsUseCase, Project::toUiProjectPreviewItem)
     }
 
     @Test

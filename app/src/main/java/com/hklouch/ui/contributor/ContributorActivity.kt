@@ -2,14 +2,12 @@ package com.hklouch.ui.contributor
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
-import com.hklouch.domain.interactor.contributor.ContributorsUseCase
 import com.hklouch.domain.interactor.contributor.ContributorsUseCase.Params
-import com.hklouch.domain.model.User
 import com.hklouch.githubrepos4cs.R
+import com.hklouch.presentation.contributor.ContributorViewModel
+import com.hklouch.presentation.contributor.ContributorViewModelFactory
 import com.hklouch.ui.ResourceBaseActivity
 import com.hklouch.ui.ResourceListBaseFragment
-import com.hklouch.ui.ResourceListViewModel
-import com.hklouch.ui.ResourceListViewModelFactory
 import com.hklouch.ui.State
 import com.hklouch.ui.model.UiPagingWrapper
 import com.hklouch.ui.model.UiUserItem
@@ -20,14 +18,12 @@ import javax.inject.Inject
 
 class ContributorActivity : ResourceBaseActivity(), ResourceListBaseFragment.Delegate<UiUserItem> {
 
-    @Inject lateinit var viewModelFactory: ResourceListViewModelFactory<User,
-            UiUserItem,
-            ContributorsUseCase,
-            ContributorsUseCase.Params>
-    private lateinit var viewModel: ResourceListViewModel<User,
-            UiUserItem,
-            ContributorsUseCase.Params>
+    /* **************** */
+    /*        DI        */
+    /* **************** */
+    @Inject lateinit var viewModelFactory: ContributorViewModelFactory
 
+    private lateinit var viewModel: ContributorViewModel
 
     /* ***************** */
     /*     Lifecycle     */
@@ -38,7 +34,7 @@ class ContributorActivity : ResourceBaseActivity(), ResourceListBaseFragment.Del
 
         AndroidInjection.inject(this)
 
-        viewModel = getViewModel { viewModelFactory.supply(Params(ownerName, projectName)) }
+        viewModel = getViewModel { viewModelFactory.supply(Params(ownerName, projectName)) } as ContributorViewModel
 
         if (savedInstanceState == null) {
             fragmentManager.beginTransaction()
@@ -47,9 +43,9 @@ class ContributorActivity : ResourceBaseActivity(), ResourceListBaseFragment.Del
         }
     }
 
-    /* ***************** */
-    /*  RepoList events  */
-    /* ***************** */
+    /* **************** */
+    /*  Content events  */
+    /* **************** */
 
     override fun onNextPageRequested(next: Int) {
         viewModel.lastQuery()?.let {
